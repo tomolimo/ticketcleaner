@@ -12,19 +12,37 @@
       <long>
          <fr><![CDATA[Ce plugin sert à 'nettoyer' les Tickets créés par eMail ou par l'interface web ainsi que les Suivis de Tickets. Il permet le filtrage des logos par comparaison de Sha1 calculés sur des fichiers exemples. Il permet le nettoyage des textes des Tickets (et des Suivis) par un méchanisme d'expressions régulières.]]></fr>
          <en><![CDATA[This plugin cleans Tickets created via eMails or via web interface (cleans also Ticket Followups). It filters pictures by comparing between new incoming file Sha1 with sample pictures.
-		 It cleans texts of Tickets (and Followups) via a regular exprssion mechanism.]]></en>
+		 It cleans texts of Tickets (and Followups) via a regular expression mechanism.]]></en>
       </long>
    </description>
-   <homepage>https://forge.indepnet.net/projects/show/ticketcleaner/</homepage>
-   <download>https://forge.indepnet.net/projects/ticketcleaner/files</download>
+   <homepage>https://github.com/tomolimo/ticketcleaner</homepage>
+   <download>https://github.com/tomolimo/ticketcleaner/releases</download>
+  <issues>https://github.com/tomolimo/ticketcleaner/issues</issues>
+  <readme>https://forge.glpi-project.org/projects/ticketcleaner/wiki</readme>
    <authors>
       <author>Olivier Moron </author>
    </authors>
    <versions>
-   <version>
-          <num>1.2.2</num>
-          <compatibility>0.83.8</compatibility>
-      </version>
+     <version>
+       <num>1.2.3</num>
+       <compatibility>0.83.8</compatibility>
+     </version>
+     <version>
+       <num>1.2.3</num>
+       <compatibility>0.84</compatibility>
+     </version>
+     <version>
+       <num>1.2.3</num>
+       <compatibility>0.85</compatibility>
+     </version>
+     <version>
+       <num>1.2.3</num>
+       <compatibility>0.90</compatibility>
+     </version>
+     <version>
+       <num>1.2.3</num>
+       <compatibility>9.1</compatibility>
+     </version>
 
    </versions>
    <langs>
@@ -33,10 +51,12 @@
    <license><![CDATA[GPL v2+]]></license>
    <tags>
          <fr>
-            <tag>Helpdesk</tag>
+           <tag>Ticket</tag>
+           <tag>mail</tag>
          </fr>
          <en>
-            <tag>Helpdesk</tag>
+           <tag>Ticket</tag>
+           <tag>mail</tag>
          </en>
    </tags>
 </root>
