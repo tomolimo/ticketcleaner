@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <name>Ticket Cleaner</name>
+   <key>ticketcleaner</key>
+   <state>stable</state>
+    <logo></logo>
+   <description>
+      <short>
+         <fr><![CDATA[Nettoyage des Tickets et des Suivis de Ticket.]]></fr>
+         <en><![CDATA[Cleaning of Tickets and Followups.]]></en>
+      </short>
+      <long>
+         <fr><![CDATA[Ce plugin sert à 'nettoyer' les Tickets créés par eMail ou par l'interface web ainsi que les Suivis de Tickets. Il permet le filtrage des logos par comparaison de Sha1 calculés sur des fichiers exemples. Il permet le nettoyage des textes des Tickets (et des Suivis) par un méchanisme d'expressions régulières.]]></fr>
+         <en><![CDATA[This plugin cleans Tickets created via eMails or via web interface (cleans also Ticket Followups). It filters pictures by comparing between new incoming file Sha1 with sample pictures.
+		 It cleans texts of Tickets (and Followups) via a regular exprssion mechanism.]]></en>
+      </long>
+   </description>
+   <homepage>https://forge.indepnet.net/projects/show/ticketcleaner/</homepage>
+   <download>https://forge.indepnet.net/projects/ticketcleaner/files</download>
+   <authors>
+      <author>Olivier Moron </author>
+   </authors>
+   <versions>
+   <version>
+          <num>1.2.2</num>
+          <compatibility>0.83.8</compatibility>
+      </version>
+
+   </versions>
+   <langs>
+      <lang>Any</lang>
+   </langs>
+   <license><![CDATA[GPL v2+]]></license>
+   <tags>
+         <fr>
+            <tag>Helpdesk</tag>
+         </fr>
+         <en>
+            <tag>Helpdesk</tag>
+         </en>
+   </tags>
+</root>
