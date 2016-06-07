@@ -118,20 +118,37 @@ function plugin_ticketcleaner_install() {
 	                  `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                  `name` VARCHAR(255) NOT NULL,
 	                  `type` INT(1) NOT NULL DEFAULT '1',
-	                  `order` INT(11) NOT NULL,
-	                  `regex` VARCHAR(255) NOT NULL,
-	                  `replacement` VARCHAR(255) NOT NULL DEFAULT '',
+	                  `order` INT(11) NULL,
+	                  `regex` TEXT NOT NULL,
+	                  `replacement` TEXT NOT NULL,
 	                  `is_active` INT(1) NOT NULL DEFAULT '0',
 	                  `comment` TEXT NULL,
 	                  `date_mod` TIMESTAMP NULL DEFAULT NULL,
 	                  PRIMARY KEY (`id`),
-	                  INDEX `type` (`type`)
+	                  INDEX `type` (`type`),
+                     INDEX `order` (`order`)
                   )
                   COLLATE='utf8_general_ci'
                   ENGINE=InnoDB
                   ;";
 
 		$DB->query($query) or die("error creating glpi_plugin_ticketcleaner_filters " . $DB->error());
+   } else {
+      // change regex and replacement field type
+      $fields = $DB->list_fields( 'glpi_plugin_ticketcleaner_filters' ) ;
+      if( strcasecmp( $fields['regex']['Type'], 'text' ) != 0) {
+
+         $query = "ALTER TABLE `glpi_plugin_ticketcleaner_filters`
+                  ALTER `regex` DROP DEFAULT,
+                  ALTER `replacement` DROP DEFAULT;";
+         $DB->query($query) or die("error droping defaults for 'regex' and 'replacement' in glpi_plugin_ticketcleaner_filters " . $DB->error());
+
+         $query = "ALTER TABLE `glpi_plugin_ticketcleaner_filters`
+                  CHANGE COLUMN `order` `order` INT(11) NULL AFTER `type` ,
+                  CHANGE COLUMN `regex` `regex` TEXT NOT NULL AFTER `order` ,
+                  CHANGE COLUMN `replacement` `replacement` TEXT NOT NULL AFTER `regex`;" ;
+         $DB->query($query) or die("error changing type of 'regex' and 'replacement' in glpi_plugin_ticketcleaner_filters " . $DB->error());
+      }
    }
 
 	return true;

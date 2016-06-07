@@ -296,12 +296,15 @@ class PluginTicketcleanerFilter extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__('RegEx', 'ticketcleaner')."&nbsp;:</td>";
-      echo "<td colspan=3><input type='text' size='150' maxlength=255 name='regex' value='".htmlentities($this->fields["regex"], ENT_QUOTES)."'></td>";
+
+      //echo "<td colspan=3><input type='text' size='150' maxlength=255 name='regex' value='".htmlentities($this->fields["regex"], ENT_QUOTES)."'></td>";
+      echo "<td colspan=3><textarea cols='150' rows='7' name='regex' >".htmlentities($this->fields["regex"], ENT_QUOTES)."</textarea></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__("Replacement", 'ticketcleaner')."&nbsp;:</td>";
-      echo "<td colspan=3><input type='text' size='150' maxlength=255 name='replacement' value='". htmlentities($this->fields["replacement"], ENT_QUOTES)."'></td>";
+      //echo "<td colspan=3><input type='text' size='150' maxlength=255 name='replacement' value='". htmlentities($this->fields["replacement"], ENT_QUOTES)."'></td>";
+      echo "<td colspan=3><textarea cols='150' rows='7' name='replacement' >".htmlentities($this->fields["replacement"], ENT_QUOTES)."</textarea></td>";
       echo "</tr>";
 
       if( version_compare(GLPI_VERSION,'9.1','lt') ) {

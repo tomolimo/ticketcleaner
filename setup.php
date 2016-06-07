@@ -46,10 +46,10 @@ function plugin_version_ticketcleaner(){
    global $LANG;
 
    return array ('name'           => 'Ticket Cleaner',
-                'version'        => '2.0.0',
+                'version'        => '2.0.1',
                 'author'         => 'Olivier Moron',
                 'homepage'       => '',
-                'minGlpiVersion' => '0.83.8');
+                'minGlpiVersion' => '0.85');
 }
 
 
@@ -58,8 +58,8 @@ function plugin_version_ticketcleaner(){
  * @return false when GLPI version is not ok!
  */
 function plugin_ticketcleaner_check_prerequisites(){
-   if (version_compare(GLPI_VERSION,'0.83.8','lt') ) {
-      echo "This plugin requires GLPI 0.83.8 or higher";
+   if (version_compare(GLPI_VERSION,'0.85','lt') ) {
+      echo "This plugin requires GLPI 0.85 or higher";
       return false;
    } else {
       return true;
