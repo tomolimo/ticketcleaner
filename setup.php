@@ -2,7 +2,7 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: Olivier Moron
-// Purpose of file: Provides cleaning of Ticket, for title, description 
+// Purpose of file: Provides cleaning of Ticket, for title, description
 //                  and followups.
 //                  It cleans text for creation and edition (from email or from web interface)
 //                  and it cleans attached pictures to emails
@@ -19,9 +19,9 @@ function plugin_init_ticketcleaner() {
    global $PLUGIN_HOOKS;
 
    Plugin::registerClass('PluginTicketCleaner', array('classname' => 'PluginTicketCleaner'));
-   
+
    $PLUGIN_HOOKS['csrf_compliant']['ticketcleaner'] = true;
-  
+
    $PLUGIN_HOOKS['pre_item_add']['ticketcleaner'] = array(
       	'Ticket' => array('PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'),
       	'TicketFollowup' => array('PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup')
@@ -30,19 +30,23 @@ function plugin_init_ticketcleaner() {
       	'Ticket' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'),
       	'TicketFollowup' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup')
       );
-   
+   if (Config::canUpdate()) {
+      // Display a menu entry
+      $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = array('config' => 'PluginTicketcleanerMenu');
+   }
+
 }
 
 
 /**
  * Summary of plugin_version_ticketcleaner
- * @return name and version of the plugin 
+ * @return name and version of the plugin
  */
 function plugin_version_ticketcleaner(){
    global $LANG;
 
    return array ('name'           => 'Ticket Cleaner',
-                'version'        => '1.2.3',
+                'version'        => '2.0.0',
                 'author'         => 'Olivier Moron',
                 'homepage'       => '',
                 'minGlpiVersion' => '0.83.8');

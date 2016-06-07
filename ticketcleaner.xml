@@ -10,17 +10,22 @@
          <en><![CDATA[Cleaning of Tickets and Followups.]]></en>
       </short>
       <long>
-         <fr><![CDATA[Ce plugin sert à 'nettoyer' les Tickets créés par eMail ou par l'interface web ainsi que les Suivis de Tickets. Il permet le filtrage des logos par comparaison de Sha1 calculés sur des fichiers exemples. Il permet le nettoyage des textes des Tickets (et des Suivis) par un méchanisme d'expressions régulières.]]></fr>
-         <en><![CDATA[This plugin cleans Tickets created via eMails or via web interface (cleans also Ticket Followups). It filters pictures by comparing between new incoming file Sha1 with sample pictures.
-		 It cleans texts of Tickets (and Followups) via a regular expression mechanism.]]></en>
+         <fr><![CDATA[Ce plugin sert à 'nettoyer' les Tickets créés par eMail ou par l'interface web ainsi que les Suivis de Tickets.
+         Il permet le filtrage des logos par comparaison de Sha1 calculés sur des fichiers exemples. 
+         Il permet le nettoyage des textes des Tickets (et des Suivis) par un méchanisme d'expressions régulières.
+         Cette nouvelle version (2.0.0) apporte une simplification des filtres et une nouvelle interface pour la saisie de ceux-ci.]]></fr>
+         <en><![CDATA[This plugin cleans Tickets created via eMails or via web interface (cleans also Ticket Followups). 
+         It filters pictures by comparing between new incoming file Sha1 with sample pictures. 
+         It cleans texts of Tickets (and Followups) via a regular expression mechanism. 
+         This new release (2.0.0) simplies filter creation, and brings a new interface to input filters.]]></en>
       </long>
    </description>
    <homepage>https://github.com/tomolimo/ticketcleaner</homepage>
    <download>https://github.com/tomolimo/ticketcleaner/releases</download>
   <issues>https://github.com/tomolimo/ticketcleaner/issues</issues>
-  <readme>https://forge.glpi-project.org/projects/ticketcleaner/wiki</readme>
+  <readme>https://github.com/tomolimo/ticketcleaner/wiki</readme>
    <authors>
-      <author>Olivier Moron </author>
+      <author>Olivier Moron</author>
    </authors>
    <versions>
      <version>
@@ -40,7 +45,15 @@
        <compatibility>0.90</compatibility>
      </version>
      <version>
-       <num>1.2.3</num>
+       <num>2.0.0</num>
+       <compatibility>0.85</compatibility>
+     </version>
+     <version>
+       <num>2.0.0</num>
+       <compatibility>0.90</compatibility>
+     </version>
+     <version>
+       <num>2.0.0</num>
        <compatibility>9.1</compatibility>
      </version>
 
