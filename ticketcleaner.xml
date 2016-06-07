@@ -17,7 +17,7 @@
          <en><![CDATA[This plugin cleans Tickets created via eMails or via web interface (cleans also Ticket Followups). 
          It filters pictures by comparing between new incoming file Sha1 with sample pictures. 
          It cleans texts of Tickets (and Followups) via a regular expression mechanism. 
-         This new release (2.0.0) simplies filter creation, and brings a new interface to input filters.]]></en>
+         This new release (2.0.0) simplifies filter creation, and brings a new interface to input filters.]]></en>
       </long>
    </description>
    <homepage>https://github.com/tomolimo/ticketcleaner</homepage>
