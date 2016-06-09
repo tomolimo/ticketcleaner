@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2016-06-08 10:59+0200\n"
-"PO-Revision-Date: 2016-06-08 11:00+0200\n"
+"PO-Revision-Date: 2016-06-09 11:14+0200\n"
 "Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -41,7 +41,7 @@ msgstr "Active"
 
 #: inc/filter.class.php:60 inc/filter.class.php:269
 msgid "Comments"
-msgstr "Comments"
+msgstr "Test"
 
 #: inc/filter.class.php:66 inc/filter.class.php:312
 msgid "Last update"
