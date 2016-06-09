@@ -1,0 +1,78 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2016-06-08 10:59+0200\n"
+"PO-Revision-Date: 2016-06-08 11:00+0200\n"
+"Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
+"Language-Team: \n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: front/filter.form.php:72
+msgid "Ticket Cleaner - Filters"
+msgstr "Ticket Cleaner - Filters"
+
+#: front/filter.php:5 inc/menu.class.php:6
+msgid "Ticket Cleaner Filters"
+msgstr "Ticket Cleaner Filters"
+
+#: inc/filter.class.php:28
+msgid "Filters"
+msgstr "Filters"
+
+#: inc/filter.class.php:30 inc/filter.class.php:42
+msgid "Filter"
+msgstr "Filter"
+
+#: inc/filter.class.php:46 inc/filter.class.php:267
+msgid "Name"
+msgstr "Name"
+
+#: inc/filter.class.php:54 inc/filter.class.php:274
+msgid "Active"
+msgstr "Active"
+
+#: inc/filter.class.php:60 inc/filter.class.php:269
+msgid "Comments"
+msgstr "Comments"
+
+#: inc/filter.class.php:66 inc/filter.class.php:312
+msgid "Last update"
+msgstr "Last update"
+
+#: inc/filter.class.php:78 inc/filter.class.php:284
+msgid "Type"
+msgstr "Type"
+
+#: inc/filter.class.php:85 inc/filter.class.php:293
+msgid "Order"
+msgstr "Order"
+
+#: inc/filter.class.php:91 inc/filter.class.php:298
+msgid "RegEx"
+msgstr "RegEx"
+
+#: inc/filter.class.php:96 inc/filter.class.php:305
+msgid "Replacement"
+msgstr "Replacement"
+
+#: inc/filter.class.php:209
+msgid "Description"
+msgstr "Description"
+
+#: inc/filter.class.php:212
+msgid "Title"
+msgstr "Title"
+
+#~ msgid "order"
+#~ msgstr "order"
+
+#~ msgid "Last modification"
+#~ msgstr "Last modification"
