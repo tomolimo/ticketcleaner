@@ -33,7 +33,7 @@ msgstr "Active"
 
 #: inc/filter.class.php:60 inc/filter.class.php:269
 msgid "Comments"
-msgstr "Test"
+msgstr "Comments"
 
 #: inc/filter.class.php:66 inc/filter.class.php:312
 msgid "Last update"
