@@ -1,111 +1,59 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2016-06-09 16:18+0200\n"
-"PO-Revision-Date: 2016-06-09 16:19+0200\n"
-"Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
-"Language-Team: \n"
-"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
-"X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Poedit-KeywordsList: __:2c,1\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Ticket Cleaner\n"
+"Language: fr\n"
 
 #: front/filter.form.php:72
 msgctxt "ticketcleaner"
 msgid "Ticket Cleaner - Filters"
-msgstr ""
+msgstr "Ticket Cleaner - Filtres"
 
 #: front/filter.php:5 inc/menu.class.php:6
 msgctxt "ticketcleaner"
 msgid "Ticket Cleaner Filters"
-msgstr ""
+msgstr "Ticket Cleaner Filtres"
 
 #: inc/filter.class.php:28
 msgctxt "ticketcleaner"
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 #: inc/filter.class.php:30 inc/filter.class.php:42
 msgctxt "ticketcleaner"
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 #: inc/filter.class.php:78 inc/filter.class.php:284
 msgctxt "ticketcleaner"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: inc/filter.class.php:85 inc/filter.class.php:293
 msgctxt "ticketcleaner"
 msgid "Order"
-msgstr ""
+msgstr "Ordre"
 
 #: inc/filter.class.php:91 inc/filter.class.php:298
 msgctxt "ticketcleaner"
 msgid "RegEx"
-msgstr ""
+msgstr "RegEx"
 
 #: inc/filter.class.php:96 inc/filter.class.php:305
 msgctxt "ticketcleaner"
 msgid "Replacement"
-msgstr ""
+msgstr "Remplacement"
 
 #: inc/filter.class.php:209
 msgctxt "ticketcleaner"
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: inc/filter.class.php:212
 msgctxt "ticketcleaner"
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
-#~ msgid "Ticket Cleaner - Filters"
-#~ msgstr "Ticket Cleaner - Filtres"
-
-#~ msgid "Ticket Cleaner Filters"
-#~ msgstr "Ticket Cleaner Filtres"
-
-#~ msgid "Filters"
-#~ msgstr "Filtres"
-
-#~ msgid "Filter"
-#~ msgstr "Filtre"
-
-#~ msgid "Name"
-#~ msgstr "Nom"
-
-#~ msgid "Active"
-#~ msgstr "Actif"
-
-#~ msgid "Comments"
-#~ msgstr "Commentaires"
-
-#~ msgid "Last update"
-#~ msgstr "Dernière mise à jour"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "Order"
-#~ msgstr "Ordre"
-
-#~ msgid "RegEx"
-#~ msgstr "RegEx"
-
-#~ msgid "Replacement"
-#~ msgstr "Remplacement"
-
-#~ msgid "Description"
-#~ msgstr "Description"
-
-#~ msgid "Title"
-#~ msgstr "Titre"
-
-#~ msgid "Last modification"
-#~ msgstr "Dernière modification"
