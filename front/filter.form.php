@@ -69,7 +69,7 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else {
-   Html::header(__('Ticket Cleaner - Filters','ticketcleaner'), $_SERVER['PHP_SELF'] , "config", "PluginTicketcleanerMenu", "ticketcleanerfilter");
+   Html::header(__('Ticket Cleaner','ticketcleaner'), $_SERVER['PHP_SELF'] , "config", "PluginTicketcleanerMenu", "ticketcleanerfilter");
    $filter->display($_GET);
    Html::footer();
 }

@@ -3,7 +3,7 @@ class PluginTicketcleanerMenu extends CommonGLPI {
    static $rightname = 'entity';
 
    static function getMenuName() {
-      return __("Ticket Cleaner Filters", "ticketcleaner");
+      return __("Ticket Cleaner", "ticketcleaner");
    }
 
    static function getMenuContent() {

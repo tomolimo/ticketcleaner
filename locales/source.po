@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ticket-cleaner\n"
-"POT-Creation-Date: 2016-06-13 15:57+0200\n"
-"PO-Revision-Date: 2016-06-13 16:07+0200\n"
+"Project-Id-Version: TicketCleaner\n"
+"POT-Creation-Date: 2016-06-13 16:06+0200\n"
+"PO-Revision-Date: 2016-06-13 16:06+0200\n"
 "Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
-"Language-Team: English, United Kingdom\n"
-"Language: en_GB\n"
+"Language-Team: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,9 +13,6 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __\n"
-"X-Crowdin-Project: ticket-cleaner\n"
-"X-Crowdin-Language: en-GB\n"
-"X-Crowdin-File: source.po\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: .git\n"
 "X-Poedit-SearchPathExcluded-1: .svn\n"
@@ -23,64 +20,66 @@ msgstr ""
 #: front/filter.form.php:72 front/filter.php:5 inc/menu.class.php:6
 #: inc/user.class.php:43
 msgid "Ticket Cleaner"
-msgstr "Ticket Cleaner"
+msgstr ""
 
 #: inc/filter.class.php:28
 msgid "Filters"
-msgstr "Filters"
+msgstr ""
 
 #: inc/filter.class.php:30 inc/filter.class.php:42
 msgid "Filter"
-msgstr "Filter"
+msgstr ""
 
 #: inc/filter.class.php:46 inc/filter.class.php:267
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: inc/filter.class.php:54 inc/filter.class.php:274
 msgid "Active"
-msgstr "Active"
+msgstr ""
 
 #: inc/filter.class.php:60 inc/filter.class.php:269
 msgid "Comments"
-msgstr "Comments"
+msgstr ""
 
 #: inc/filter.class.php:66 inc/filter.class.php:312
 msgid "Last update"
-msgstr "Last update"
+msgstr ""
 
 #: inc/filter.class.php:78 inc/filter.class.php:284
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #: inc/filter.class.php:85 inc/filter.class.php:293
 msgid "Order"
-msgstr "Order"
+msgstr ""
 
 #: inc/filter.class.php:91 inc/filter.class.php:298
 msgid "RegEx"
-msgstr "RegEx"
+msgstr ""
 
 #: inc/filter.class.php:96 inc/filter.class.php:305
 msgid "Replacement"
-msgstr "Replacement"
+msgstr ""
 
 #: inc/filter.class.php:209
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: inc/filter.class.php:212
 msgid "Title"
-msgstr "Title"
+msgstr ""
 
 #: inc/user.class.php:69
 msgid "Translation mode"
-msgstr "Translation mode"
+msgstr ""
 
 #: inc/user.class.php:72
-msgid "Translation mode (valid for current session only, will be reset at next login)"
-msgstr "Translation mode (valid for current session only, will be reset at next login)"
+msgid ""
+"Translation mode (valid for current session only, will be reset at next "
+"login)"
+msgstr ""
 
 #: inc/user.class.php:80
 msgid "Save"
-msgstr "Save"
+msgstr ""

@@ -16,7 +16,11 @@
  */
 function plugin_init_ticketcleaner() {
 
-   global $PLUGIN_HOOKS;
+   global $PLUGIN_HOOKS, $CFG_GLPI, $DEFAULT_PLURAL_NUMBER;
+
+   if( (!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) && !isset($_SESSION['glpiticketcleanertranslationmode'])){
+      $_SESSION['glpiticketcleanertranslationmode'] = 0 ;
+   }
 
    Plugin::registerClass('PluginTicketCleaner', array('classname' => 'PluginTicketCleaner'));
 
@@ -30,9 +34,35 @@ function plugin_init_ticketcleaner() {
       	'Ticket' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'),
       	'TicketFollowup' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup')
       );
-   if (Config::canUpdate()) {
+
+   $plugin = new Plugin();
+   if ($plugin->isInstalled('ticketcleaner')
+       && $plugin->isActivated('ticketcleaner')
+       && Session::getLoginUserID()
+       && Config::canUpdate()) {
+
+      // show tab in user config to show translation switch
+      Plugin::registerClass('PluginTicketcleanerUser',
+                               array('addtabon'                    => array('Preference', 'User')));
+
       // Display a menu entry
       $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = array('config' => 'PluginTicketcleanerMenu');
+
+      // if translation mode is ON, then add translation xx_XX fake language to session
+      if( isset( $_SESSION['glpiticketcleanertranslationmode'] ) && $_SESSION['glpiticketcleanertranslationmode'] ) {
+         $PLUGIN_HOOKS['add_javascript']['ticketcleaner'] = array('js/locales.js'); 
+         $CFG_GLPI["languages"]['xx_XX']= array('Translation', 'xx_XX.mo', 'xx', 'xx', 'translation' , $DEFAULT_PLURAL_NUMBER);
+         $trytoload = 'en_GB';
+         if (isset($_SESSION['glpilanguage'])) {
+            $trytoload = $_SESSION["glpilanguage"];
+         }
+
+         // If not set try default lang file
+         if (empty($trytoload)) {
+            $trytoload = $CFG_GLPI["language"];
+         }
+         Plugin::loadLang( 'ticketcleaner', 'xx_XX', $trytoload ) ;
+      }
    }
 
 }
@@ -46,7 +76,7 @@ function plugin_version_ticketcleaner(){
    global $LANG;
 
    return array ('name'           => 'Ticket Cleaner',
-                'version'        => '2.0.1',
+                'version'        => '2.0.2',
                 'author'         => 'Olivier Moron',
                 'homepage'       => '',
                 'minGlpiVersion' => '0.85');

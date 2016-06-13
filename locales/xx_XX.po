@@ -4,17 +4,17 @@ msgstr ""
 "POT-Creation-Date: 2016-06-13 15:57+0200\n"
 "PO-Revision-Date: 2016-06-13 16:07+0200\n"
 "Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
-"Language-Team: English, United Kingdom\n"
-"Language: en_GB\n"
+"Language-Team: xxxx\n"
+"Language: xx\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.8\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Crowdin-Project: ticket-cleaner\n"
-"X-Crowdin-Language: en-GB\n"
+"X-Crowdin-Language: xx\n"
 "X-Crowdin-File: source.po\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: .git\n"
@@ -23,64 +23,64 @@ msgstr ""
 #: front/filter.form.php:72 front/filter.php:5 inc/menu.class.php:6
 #: inc/user.class.php:43
 msgid "Ticket Cleaner"
-msgstr "Ticket Cleaner"
+msgstr "crwdns133:0crwdne133:0"
 
 #: inc/filter.class.php:28
 msgid "Filters"
-msgstr "Filters"
+msgstr "crwdns121:0crwdne121:0"
 
 #: inc/filter.class.php:30 inc/filter.class.php:42
 msgid "Filter"
-msgstr "Filter"
+msgstr "crwdns122:0crwdne122:0"
 
 #: inc/filter.class.php:46 inc/filter.class.php:267
 msgid "Name"
-msgstr "Name"
+msgstr "crwdns123:0crwdne123:0"
 
 #: inc/filter.class.php:54 inc/filter.class.php:274
 msgid "Active"
-msgstr "Active"
+msgstr "crwdns124:0crwdne124:0"
 
 #: inc/filter.class.php:60 inc/filter.class.php:269
 msgid "Comments"
-msgstr "Comments"
+msgstr "crwdns125:0crwdne125:0"
 
 #: inc/filter.class.php:66 inc/filter.class.php:312
 msgid "Last update"
-msgstr "Last update"
+msgstr "crwdns126:0crwdne126:0"
 
 #: inc/filter.class.php:78 inc/filter.class.php:284
 msgid "Type"
-msgstr "Type"
+msgstr "crwdns127:0crwdne127:0"
 
 #: inc/filter.class.php:85 inc/filter.class.php:293
 msgid "Order"
-msgstr "Order"
+msgstr "crwdns128:0crwdne128:0"
 
 #: inc/filter.class.php:91 inc/filter.class.php:298
 msgid "RegEx"
-msgstr "RegEx"
+msgstr "crwdns129:0crwdne129:0"
 
 #: inc/filter.class.php:96 inc/filter.class.php:305
 msgid "Replacement"
-msgstr "Replacement"
+msgstr "crwdns130:0crwdne130:0"
 
 #: inc/filter.class.php:209
 msgid "Description"
-msgstr "Description"
+msgstr "crwdns131:0crwdne131:0"
 
 #: inc/filter.class.php:212
 msgid "Title"
-msgstr "Title"
+msgstr "crwdns132:0crwdne132:0"
 
 #: inc/user.class.php:69
 msgid "Translation mode"
-msgstr "Translation mode"
+msgstr "crwdns134:0crwdne134:0"
 
 #: inc/user.class.php:72
 msgid "Translation mode (valid for current session only, will be reset at next login)"
-msgstr "Translation mode (valid for current session only, will be reset at next login)"
+msgstr "crwdns135:0crwdne135:0"
 
 #: inc/user.class.php:80
 msgid "Save"
-msgstr "Save"
+msgstr "crwdns136:0crwdne136:0"

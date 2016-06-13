@@ -1,59 +1,86 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: ticket-cleaner\n"
+"POT-Creation-Date: 2016-06-13 15:57+0200\n"
+"PO-Revision-Date: 2016-06-13 16:07+0200\n"
+"Last-Translator: Olivier Moron <olivier.moron@araymond.com>\n"
+"Language-Team: French\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Ticket Cleaner\n"
-"Language: fr\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Crowdin-Project: ticket-cleaner\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: source.po\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: .git\n"
+"X-Poedit-SearchPathExcluded-1: .svn\n"
 
-#: front/filter.form.php:72
-msgctxt "ticketcleaner"
-msgid "Ticket Cleaner - Filters"
-msgstr "Ticket Cleaner - Filtres"
-
-#: front/filter.php:5 inc/menu.class.php:6
-msgctxt "ticketcleaner"
-msgid "Ticket Cleaner Filters"
-msgstr "Ticket Cleaner Filtres"
+#: front/filter.form.php:72 front/filter.php:5 inc/menu.class.php:6
+#: inc/user.class.php:43
+msgid "Ticket Cleaner"
+msgstr "Ticket Cleaner"
 
 #: inc/filter.class.php:28
-msgctxt "ticketcleaner"
 msgid "Filters"
 msgstr "Filtres"
 
 #: inc/filter.class.php:30 inc/filter.class.php:42
-msgctxt "ticketcleaner"
 msgid "Filter"
 msgstr "Filtre"
 
+#: inc/filter.class.php:46 inc/filter.class.php:267
+msgid "Name"
+msgstr "Nom"
+
+#: inc/filter.class.php:54 inc/filter.class.php:274
+msgid "Active"
+msgstr "Actif"
+
+#: inc/filter.class.php:60 inc/filter.class.php:269
+msgid "Comments"
+msgstr "Commentaires"
+
+#: inc/filter.class.php:66 inc/filter.class.php:312
+msgid "Last update"
+msgstr "Dernière mise à jour"
+
 #: inc/filter.class.php:78 inc/filter.class.php:284
-msgctxt "ticketcleaner"
 msgid "Type"
 msgstr "Type"
 
 #: inc/filter.class.php:85 inc/filter.class.php:293
-msgctxt "ticketcleaner"
 msgid "Order"
 msgstr "Ordre"
 
 #: inc/filter.class.php:91 inc/filter.class.php:298
-msgctxt "ticketcleaner"
 msgid "RegEx"
 msgstr "RegEx"
 
 #: inc/filter.class.php:96 inc/filter.class.php:305
-msgctxt "ticketcleaner"
 msgid "Replacement"
 msgstr "Remplacement"
 
 #: inc/filter.class.php:209
-msgctxt "ticketcleaner"
 msgid "Description"
 msgstr "Description"
 
 #: inc/filter.class.php:212
-msgctxt "ticketcleaner"
 msgid "Title"
 msgstr "Titre"
 
+#: inc/user.class.php:69
+msgid "Translation mode"
+msgstr "Mode traduction"
+
+#: inc/user.class.php:72
+msgid "Translation mode (valid for current session only, will be reset at next login)"
+msgstr "Mode traduction (valide uniquement pour la session en cours)"
+
+#: inc/user.class.php:80
+msgid "Save"
+msgstr "Enregistrer"

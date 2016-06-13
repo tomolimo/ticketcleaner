@@ -290,7 +290,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td >".__('order', 'ticketcleaner')."&nbsp;:</td>";
+      echo "<td >".__('Order', 'ticketcleaner')."&nbsp;:</td>";
       echo "<td><input type='text' size='10' maxlength=10 name='order' value='".$this->fields["order"]."'></td>";
       echo "</tr>";
 
@@ -309,7 +309,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
 
       if( version_compare(GLPI_VERSION,'9.1','lt') ) {
          echo "<tr class='tab_bg_1'>";
-         echo "<td >".__('Last modification')."&nbsp;:</td><td>";
+         echo "<td >".__('Last update')."&nbsp;:</td><td>";
          echo Html::convDateTime($this->fields["date_mod"]);
          echo "</td></tr>";
       }
