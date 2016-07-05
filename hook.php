@@ -219,7 +219,7 @@ class PluginTicketCleaner {
 			}
 
 		   if( $is_content && isset($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ])) {
-            $temp_content = html_entity_decode( $parm->input['content'], ENT_QUOTES);
+            $temp_content = html_entity_decode( $parm->input['content'], ENT_QUOTES, 'UTF-8');
             if( isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
                Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" ) ;
             }
@@ -229,7 +229,7 @@ class PluginTicketCleaner {
                   Toolbox::logInFile('TicketCleaner', "\tAfter filter: " . $ptn['name'] . "\t text: " . $temp_content . "\n" ) ;
                }
 			   }
-            $parm->input['content'] = htmlentities( $temp_content, ENT_QUOTES) ;
+            $parm->input['content'] = htmlentities( $temp_content, ENT_QUOTES, 'UTF-8') ;
 		   }
 
 		   if( $is_name && isset($filters[ PluginTicketcleanerFilter::TITLE_TYPE ]) ) {
