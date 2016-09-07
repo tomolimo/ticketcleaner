@@ -76,7 +76,7 @@ function plugin_version_ticketcleaner(){
    global $LANG;
 
    return array ('name'           => 'Ticket Cleaner',
-                'version'        => '2.0.3',
+                'version'        => '2.0.4',
                 'author'         => 'Olivier Moron',
                 'homepage'       => '',
                 'minGlpiVersion' => '0.85');

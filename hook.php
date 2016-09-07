@@ -248,21 +248,21 @@ class PluginTicketCleaner {
      * if it has been deleted or not
 	 */
 	public static function cleanImages($parm){
-		global $DB ;
+		global $DB;
 
 		// this ticket has been created via email receiver.
 		// has any FILE attached to it?
 		if( array_key_exists('name', $parm->input)
 			&& array_key_exists('_mailgate', $parm->input)
-			&& array_key_exists('filename', $_FILES)
-			&& array_key_exists('tmp_name', $_FILES['filename']) ) {
+			&& array_key_exists('_filename', $parm->input)
+			&& is_array($parm->input['_filename']) ) {
 
 			// if necessary will reload sha1
 			loadSha1IntoDB() ;
 
 			$msg_log = "Ticket: '".$parm->input['name']."'\n";
 
-			// signature FILES are deleted from array $_FILES
+			// signature FILES are deleted from array $parm->input['_filename']
 
 			// load pictures signatures from DB
 			$files_hash = array( ) ;
@@ -272,41 +272,28 @@ class PluginTicketCleaner {
 				$files_hash[] = $data['hash'] ;
 			}
 
-			$deleted = false ;
-			foreach( $_FILES['filename']['tmp_name'] as $loc_key => $loc_file) {
-				$loc_type = $_FILES['filename']['type'][$loc_key] ;
+			foreach( $parm->input['_filename'] as $loc_key => $loc_file) {
+            $loc_file = GLPI_TMP_DIR. "/$loc_file" ;
+				$loc_type = Toolbox::getMime( $loc_file ) ;
 				$loc_sha = "";
 				$loc_deleted = false ;
 				if( stripos( $loc_type, "IMAGE/") !== false){
 					$loc_sha = sha1_file( $loc_file ) ;
 
 					if( in_array($loc_sha, $files_hash) ) {
-						unset($_FILES['filename']['size'][$loc_key]) ;
-						unset($_FILES['filename']['name'][$loc_key]) ;
-						unset($_FILES['filename']['tmp_name'][$loc_key]) ;
-						unset($_FILES['filename']['type'][$loc_key]) ;
-						unset($_FILES['filename']['error'][$loc_key]) ;
+						unset($parm->input['_filename'][$loc_key]) ;
 						unlink($loc_file);
 						$loc_deleted = true ;
-						$deleted = true ;
 					}
 				}
 				if( $loc_sha <> "" )
-					$msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".$loc_deleted."'\n" ;
+					$msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".($loc_deleted?"True":"False")."'\n" ;
 				else
 					$msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\n" ;
 			}
 
 			Toolbox::logInFile('TicketCleaner', $msg_log ) ;
 
-			if( $deleted ){
-				// to re-index the arrays
-				$_FILES['filename']['size'] = array_values( $_FILES['filename']['size'] ) ;
-				$_FILES['filename']['name'] = array_values( $_FILES['filename']['name'] ) ;
-				$_FILES['filename']['tmp_name'] = array_values( $_FILES['filename']['tmp_name'] ) ;
-				$_FILES['filename']['type'] = array_values( $_FILES['filename']['type'] ) ;
-				$_FILES['filename']['error'] = array_values( $_FILES['filename']['error'] ) ;
-			}
 		}
 	}
 
