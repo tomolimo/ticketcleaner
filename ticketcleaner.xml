@@ -41,17 +41,21 @@ This plugin adds the possibility to translate it 'inline', see wiki.]]></en>
        <compatibility>0.84</compatibility>
      </version>
      <version>
-       <num>2.0.4</num>
+       <num>2.1.0</num>
        <compatibility>0.85</compatibility>
      </version>
      <version>
-       <num>2.0.4</num>
+       <num>2.1.0</num>
        <compatibility>0.90</compatibility>
      </version>
-     <version>
-       <num>2.0.4</num>
-       <compatibility>9.1</compatibility>
-     </version>
+      <version>
+         <num>2.1.0</num>
+         <compatibility>9.1</compatibility>
+      </version>
+      <version>
+         <num>2.1.0</num>
+         <compatibility>9.2</compatibility>
+      </version>
 
    </versions>
    <langs>

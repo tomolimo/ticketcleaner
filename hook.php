@@ -61,6 +61,30 @@ function loadSha1IntoDB(){
 	}
 }
 
+
+
+if (!function_exists('arTableExists')) {
+   function arTableExists($table) {
+      global $DB;
+      if (method_exists( $DB, 'tableExists')) {
+         return $DB->tableExists($table);
+      } else {
+         return TableExists($table);
+      }
+   }
+}
+
+if (!function_exists('arFieldExists')) {
+   function arFieldExists($table, $field, $usecache = true) {
+      global $DB;
+      if (method_exists( $DB, 'fieldExists')) {
+         return $DB->fieldExists($table, $field, $usecache);
+      } else {
+         return FieldExists($table, $field, $usecache);
+      }
+   }
+}
+
 /**
  * Summary of plugin_ticketcleaner_install
  * Installs plugin into current GLPI instance
@@ -70,7 +94,7 @@ function loadSha1IntoDB(){
 function plugin_ticketcleaner_install() {
 	global $DB ;
 
-	if (!TableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
+	if (!arTableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
 		$query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate` (
 				`id` INT(10) NOT NULL AUTO_INCREMENT,
 				`lastupdate` VARCHAR(50) NULL,
@@ -84,7 +108,7 @@ function plugin_ticketcleaner_install() {
 	}
 
 
-	if (!TableExists("glpi_plugin_ticketcleaner_picturehashes")) {
+	if (!arTableExists("glpi_plugin_ticketcleaner_picturehashes")) {
 		$query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes` (
 				`id` INT(10) NOT NULL AUTO_INCREMENT,
 				`hash` CHAR(40) NOT NULL,
@@ -101,18 +125,18 @@ function plugin_ticketcleaner_install() {
 
 	loadSha1IntoDB() ; // also done on the fly
 
-   if( TableExists("backup_glpi_plugin_ticketcleaner_filters") ) {
+   if (arTableExists("backup_glpi_plugin_ticketcleaner_filters") ) {
       $query = "DROP TABLE `backup_glpi_plugin_ticketcleaner_filters`;";
       $DB->query($query) or die("error droping old backup_glpi_plugin_ticketcleaner_filters" . $DB->error());
    }
 
-	if( TableExists("glpi_plugin_ticketcleaner_filters") && FieldExists( 'glpi_plugin_ticketcleaner_filters', 'filter' ) ) {
+	if (arTableExists("glpi_plugin_ticketcleaner_filters") && arFieldExists( 'glpi_plugin_ticketcleaner_filters', 'filter' ) ) {
 
       $query = "RENAME TABLE `glpi_plugin_ticketcleaner_filters` TO `backup_glpi_plugin_ticketcleaner_filters`;";
       $DB->query($query) or die("error renaming glpi_plugin_ticketcleaner_filters to backup_glpi_plugin_ticketcleaner_filters" . $DB->error());
    }
 
-	if (!TableExists("glpi_plugin_ticketcleaner_filters")) {
+	if (!arTableExists("glpi_plugin_ticketcleaner_filters")) {
       $query = "
             CREATE TABLE `glpi_plugin_ticketcleaner_filters` (
 	                  `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -165,12 +189,12 @@ function plugin_ticketcleaner_uninstall() {
 	global $DB;
 
 	// Current version tables
-	if (TableExists("glpi_plugin_ticketcleaner_picturehashes")) {
+	if (arTableExists("glpi_plugin_ticketcleaner_picturehashes")) {
 		$query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes`";
 		$DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes");
 	}
 
-	if (TableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
+	if (arTableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
 		$query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate`";
 		$DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes_lastupdate");
 	}
@@ -283,6 +307,11 @@ class PluginTicketCleaner {
 					if( in_array($loc_sha, $files_hash) ) {
 						unset($parm->input['_filename'][$loc_key]) ;
 						unlink($loc_file);
+                  if( isset( $parm->input['_tag'][$loc_key] ) ) {
+                     // remove the tag from content
+                     $parm->input['content'] = str_replace( "#".$parm->input['_tag'][$loc_key]."#", "", $parm->input['content'] ) ;
+                     unset($parm->input['_tag'][$loc_key]);
+                  }
 						$loc_deleted = true ;
 					}
 				}
