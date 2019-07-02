@@ -31,70 +31,90 @@ class PluginTicketcleanerFilter extends CommonDBTM {
    }
 
    /**
-    * Summary of getSearchOptions
+     * Summary of rawSearchOptions
     * @return mixed
     */
-   function getSearchOptions() {
+   function rawSearchOptions() {
       global $LANG;
 
       $tab = [];
 
-      $tab['common'] = __('Filter', 'ticketcleaner');
+      $tab[] = [
+              'id'                 => 'common',
+              'name'               =>__('Filter', 'ticketcleaner')
+           ];
 
-      $tab[1]['table']         = $this->getTable();
-      $tab[1]['field']         = 'name';
-      $tab[1]['name']          = __('Name');
-      $tab[1]['datatype']      = 'itemlink';
-      $tab[1]['searchtype']           = 'contains';
-      $tab[1]['massiveaction']        = false;
-      $tab[1]['itemlink_type'] = $this->getType();
+      $tab[] = [
+        'id'                 => '1',
+        'table'              => $this->getTable(),
+        'field'              => 'name',
+        'name'               => __('Name'),
+        'datatype'           => 'itemlink',
+        'searchtype'         => 'contains',
+        'massiveaction'      => false,
+        'itemlink_type'      => 'PluginTicketcleanerFilter'
+        ];
 
-      $tab[8]['table']         = $this->getTable();
-      $tab[8]['field']         = 'is_active';
-      $tab[8]['name']          = __('Active');
-      $tab[8]['massiveaction'] = true;
-      $tab[8]['datatype']      = 'bool';
+      $tab[] = [
+         'id'                 => '8',
+         'table'              => $this->getTable(),
+         'field'              => 'is_active',
+         'name'               => __('Active'),
+         'massiveaction'      => true,
+         'datatype'           => 'bool'
+      ];
 
-      $tab[4]['table']        = $this->getTable();
-      $tab[4]['field']        =  'comment';
-      $tab[4]['name']         =  __('Comments');
-      $tab[4]['massiveaction'] = true;
-      $tab[4]['datatype']     =  'text';
+      $tab[] = [
+         'id'                 => '4',
+         'table'              => $this->getTable(),
+         'field'              => 'comment',
+         'name'               => __('Comments'),
+         'massiveaction'      => true,
+         'datatype'           => 'text'
+      ];
 
-      $tab[19]['table']               = $this->getTable();
-      $tab[19]['field']               = 'date_mod';
-      $tab[19]['name']                = __('Last update');
-      $tab[19]['datatype']            = 'datetime';
-      $tab[19]['massiveaction']       = false;
+      $tab[] = [
+         'id'                 => '19',
+         'table'              => $this->getTable(),
+         'field'              => 'date_mod',
+         'name'               => __('Last update'),
+         'datatype'           => 'datetime',
+         'massiveaction'      => false
+      ];
 
-      //$tab[802]['table']               = $this->getTable();
-      //$tab[802]['field']               = 'css_selector_value';
-      //$tab[802]['name']                = __('Value CSS selector', 'ticketcleaner');
-      //$tab[802]['massiveaction']       = false;
-      //$tab[802]['datatype']            = 'dropdown';
+      $tab[] = [
+         'id'                 => '900',
+         'table'              => $this->getTable(),
+         'field'              => 'type',
+         'name'               => __('Type', 'ticketcleaner'),
+         'massiveaction'      => false,
+         'searchtype'         => 'equals',
+         'datatype'           => 'specific'
+      ];
 
-      $tab[900]['table']               = $this->getTable();
-      $tab[900]['field']               = 'type';
-      $tab[900]['name']                = __('Type', 'ticketcleaner');
-      $tab[900]['massiveaction']       = false;
-      $tab[900]['searchtype']        = 'equals';
-      $tab[900]['datatype']          = 'specific';
+      $tab[] = [
+         'id'                 => '901',
+         'table'              => $this->getTable(),
+         'field'              => 'order',
+         'name'               => __('Order', 'ticketcleaner'),
+         'massiveaction'      => false
+      ];
 
-      $tab[901]['table']               = $this->getTable();
-      $tab[901]['field']               = 'order';
-      $tab[901]['name']                = __('Order', 'ticketcleaner');
-      $tab[901]['massiveaction']       = false;
-      //$tab[901]['searchtype']        = 'equals';
+      $tab[] = [
+         'id'                 => '902',
+         'table'              => $this->getTable(),
+         'field'              => 'regex',
+         'name'               => __('RegEx', 'ticketcleaner'),
+         'massiveaction'      => false
+      ];
 
-      $tab[902]['table']               = $this->getTable();
-      $tab[902]['field']               = 'regex';
-      $tab[902]['name']                = __('RegEx', 'ticketcleaner');
-      $tab[902]['massiveaction']       = false;
-
-      $tab[903]['table']               = $this->getTable();
-      $tab[903]['field']               = 'replacement';
-      $tab[903]['name']                = __('Replacement', 'ticketcleaner');
-      $tab[903]['massiveaction']       = false;
+      $tab[] = [
+         'id'                 => '903',
+         'table'              => $this->getTable(),
+         'field'              => 'replacement',
+         'name'               => __('Replacement', 'ticketcleaner'),
+         'massiveaction'      => false
+      ];
 
       return $tab;
    }

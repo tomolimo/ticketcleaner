@@ -35,3 +35,6 @@ Remove functions for 9.1 compatibility
 
 ## 2.3.3
 Fixed issue with the \r\n
+
+## 2.4.0
+Compatibility with GLPI 9.4

@@ -8,7 +8,7 @@
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "2.3.3");
+define ("PLUGIN_TICKETCLEANER_VERSION", "2.4.0");
 
 /**
  * Summary of plugin_init_ticketcleaner

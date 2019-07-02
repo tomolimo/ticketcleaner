@@ -229,7 +229,7 @@ class PluginTicketCleaner {
             // cases of the &quot; that are converted into '; instead of " in GLPI 9.2, 9.3 and 9.4
             $temp_content = str_replace('\\\';', '\\"', $temp_content);
             // backport of addslashes_deep from GLPI 9.4/bugfixes, completes the one from GLPI 9.2
-            $temp_content = str_replace(['&#39;', '&#x27;'], ["'", "'"], $temp_content);
+            $temp_content = str_replace(['&#x27;'], ["'"], $temp_content);
             // End of GLPI fixes
             ////////////////////
 
