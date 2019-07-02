@@ -34,7 +34,11 @@ Added arTableExists and arFieldExists to be compatible with 9.2
 Remove functions for 9.1 compatibility
 
 ## 2.3.3
+Compatibility with GLPI 9.2
 Fixed issue with the \r\n
 
 ## 2.4.0
+Compatibility with GLPI 9.3
+
+## 2.5.0
 Compatibility with GLPI 9.4

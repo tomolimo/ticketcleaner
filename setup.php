@@ -8,7 +8,7 @@
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "2.4.0");
+define ("PLUGIN_TICKETCLEANER_VERSION", "2.5.0");
 
 /**
  * Summary of plugin_init_ticketcleaner
@@ -28,11 +28,11 @@ function plugin_init_ticketcleaner() {
 
    $PLUGIN_HOOKS['pre_item_add']['ticketcleaner'] = [
           'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'],
-          'TicketFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup']
+          'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup']
       ];
    $PLUGIN_HOOKS['pre_item_update']['ticketcleaner'] = [
           'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'],
-          'TicketFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup']
+          'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup']
       ];
 
    $plugin = new Plugin();
