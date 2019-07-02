@@ -21,13 +21,13 @@ class PluginTicketcleanerFilter extends CommonDBTM {
    const TITLE_TYPE   = 1;
 
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       global $LANG;
 
       if ($nb>1) {
-         return __('Filters','ticketcleaner');
+         return __('Filters', 'ticketcleaner');
       }
-      return __('Filter','ticketcleaner');
+      return __('Filter', 'ticketcleaner');
    }
 
    /**
@@ -37,9 +37,9 @@ class PluginTicketcleanerFilter extends CommonDBTM {
    function getSearchOptions() {
       global $LANG;
 
-      $tab = array();
+      $tab = [];
 
-      $tab['common'] = __('Filter','ticketcleaner');
+      $tab['common'] = __('Filter', 'ticketcleaner');
 
       $tab[1]['table']         = $this->getTable();
       $tab[1]['field']         = 'name';
@@ -96,7 +96,6 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       $tab[903]['name']                = __('Replacement', 'ticketcleaner');
       $tab[903]['massiveaction']       = false;
 
-
       return $tab;
    }
 
@@ -107,13 +106,12 @@ class PluginTicketcleanerFilter extends CommonDBTM {
     * @param $values
     * @param $options   array
     **/
-   static function getSpecificValueToDisplay($field, $values, array $options=array()) {
+   static function getSpecificValueToDisplay($field, $values, array $options = []) {
 
       if (!is_array($values)) {
-         $values = array($field => $values);
+         $values = [$field => $values];
       }
       switch ($field) {
-
 
          case 'type':
             return self::getFilterTypeName($values[$field]);
@@ -131,10 +129,10 @@ class PluginTicketcleanerFilter extends CommonDBTM {
     *
     * @return string
     **/
-   static function getSpecificValueToSelect($field, $name='', $values='', array $options=array()) {
+   static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = []) {
 
       if (!is_array($values)) {
-         $values = array($field => $values);
+         $values = [$field => $values];
       }
       $options['display'] = false;
       switch ($field) {
@@ -160,10 +158,10 @@ class PluginTicketcleanerFilter extends CommonDBTM {
     *
     * @return string id of the select
     **/
-   static function dropdownType($name, $options=array()) {
+   static function dropdownType($name, $options = []) {
 
       $params['value']       = 0;
-      $params['toadd']       = array();
+      $params['toadd']       = [];
       $params['on_change']   = '';
       $params['display']     = true;
 
@@ -173,7 +171,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
          }
       }
 
-      $items = array();
+      $items = [];
       if (count($params['toadd']) > 0) {
          $items = $params['toadd'];
       }
@@ -209,7 +207,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
             return __('Description', 'ticketcleaner');
 
          case self::TITLE_TYPE :
-            return __('Title','ticketcleaner');
+            return __('Title', 'ticketcleaner');
 
          default :
             // Return $value if not defined
@@ -222,7 +220,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
     *
     * @see CommonGLPI::getTabNameForItem()
     **/
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if (static::canView()) {
          $nb = 0;
@@ -236,10 +234,10 @@ class PluginTicketcleanerFilter extends CommonDBTM {
    }
 
 
-   function defineTabs($options=array()) {
+   function defineTabs($options = []) {
 
       //        $ong = array('empty' => $this->getTypeName(1));
-      $ong = array();
+      $ong = [];
       $this->addDefaultFormTab($ong);
       //$this->addStandardTab(__CLASS__, $ong, $options);
 
@@ -248,18 +246,17 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       return $ong;
    }
 
-   function showForm ($ID, $options=array('candel'=>false)) {
+   function showForm ($ID, $options = ['candel'=>false]) {
       global $DB, $CFG_GLPI, $LANG;
 
       if ($ID > 0) {
-         $this->check($ID,READ);
+         $this->check($ID, READ);
       }
 
-      $canedit = $this->can($ID,UPDATE);
-      $options['canedit'] = $canedit ;
+      $canedit = $this->can($ID, UPDATE);
+      $options['canedit'] = $canedit;
 
       $this->initForm($ID, $options);
-
 
       $this->showFormHeader($options);
 
@@ -272,10 +269,10 @@ class PluginTicketcleanerFilter extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__("Active")."&nbsp;:</td>";
-      echo "<td>" ;
-      Html::showCheckbox(array('name'           => 'is_active',
+      echo "<td>";
+      Html::showCheckbox(['name'           => 'is_active',
                                      'checked'        => $this->fields['is_active']
-                                     ));
+                                     ]);
       echo "</td></tr>";
 
       echo "</td></tr>";
@@ -284,7 +281,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       echo "<td >".__('Type', 'ticketcleaner')."&nbsp;:</td>";
       //echo "<td><input type='text' size='50' maxlength=200 name='type' value='".$this->fields["type"]."'></td>";
       echo "<td>";
-      $opt = array('value' => $this->fields["type"]);
+      $opt = ['value' => $this->fields["type"]];
       self::dropdownType('type', $opt);
       echo "</td>";
       echo "</tr>";
@@ -307,13 +304,12 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       echo "<td colspan=3><textarea cols='150' rows='7' name='replacement' >".htmlentities($this->fields["replacement"], ENT_QUOTES)."</textarea></td>";
       echo "</tr>";
 
-      if( version_compare(GLPI_VERSION,'9.1','lt') ) {
+      if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
          echo "<tr class='tab_bg_1'>";
          echo "<td >".__('Last update')."&nbsp;:</td><td>";
          echo Html::convDateTime($this->fields["date_mod"]);
          echo "</td></tr>";
       }
-
 
       echo "<tr><td>&nbsp;";
       echo "</td></tr>";
@@ -327,18 +323,18 @@ class PluginTicketcleanerFilter extends CommonDBTM {
    }
 
    function prepareInputForAdd($input) {
-      if(isset( $input['regex'] ) ) {
-         $input['regex'] = html_entity_decode( $input['regex']) ;
+      if (isset( $input['regex'] )) {
+         $input['regex'] = html_entity_decode( $input['regex']);
       }
-      return $input ;
+      return $input;
    }
 
    function prepareInputForUpdate($input) {
-      if(isset( $input['regex'] ) ) {
-         $input['regex'] = html_entity_decode( $input['regex']) ;
+      if (isset( $input['regex'] )) {
+         $input['regex'] = html_entity_decode( $input['regex']);
       }
 
-      return $input ;
+      return $input;
    }
 
 

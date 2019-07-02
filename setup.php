@@ -8,7 +8,7 @@
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-
+define ("PLUGIN_TICKETCLEANER_VERSION", "2.3.3");
 
 /**
  * Summary of plugin_init_ticketcleaner
@@ -18,22 +18,22 @@ function plugin_init_ticketcleaner() {
 
    global $PLUGIN_HOOKS, $CFG_GLPI, $DEFAULT_PLURAL_NUMBER;
 
-   if( (!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) && !isset($_SESSION['glpiticketcleanertranslationmode'])){
-      $_SESSION['glpiticketcleanertranslationmode'] = 0 ;
+   if ((!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) && !isset($_SESSION['glpiticketcleanertranslationmode'])) {
+      $_SESSION['glpiticketcleanertranslationmode'] = 0;
    }
 
-   Plugin::registerClass('PluginTicketCleaner', array('classname' => 'PluginTicketCleaner'));
+   Plugin::registerClass('PluginTicketCleaner', ['classname' => 'PluginTicketCleaner']);
 
    $PLUGIN_HOOKS['csrf_compliant']['ticketcleaner'] = true;
 
-   $PLUGIN_HOOKS['pre_item_add']['ticketcleaner'] = array(
-      	'Ticket' => array('PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'),
-      	'TicketFollowup' => array('PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup')
-      );
-   $PLUGIN_HOOKS['pre_item_update']['ticketcleaner'] = array(
-      	'Ticket' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'),
-      	'TicketFollowup' => array('PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup')
-      );
+   $PLUGIN_HOOKS['pre_item_add']['ticketcleaner'] = [
+          'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'],
+          'TicketFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup']
+      ];
+   $PLUGIN_HOOKS['pre_item_update']['ticketcleaner'] = [
+          'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'],
+          'TicketFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup']
+      ];
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('ticketcleaner')
@@ -43,15 +43,15 @@ function plugin_init_ticketcleaner() {
 
       // show tab in user config to show translation switch
       Plugin::registerClass('PluginTicketcleanerUser',
-                               array('addtabon'                    => array('Preference', 'User')));
+                               ['addtabon'                    => ['Preference', 'User']]);
 
       // Display a menu entry
-      $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = array('config' => 'PluginTicketcleanerMenu');
+      $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = ['config' => 'PluginTicketcleanerMenu'];
 
       // if translation mode is ON, then add translation xx_XX fake language to session
-      if( isset( $_SESSION['glpiticketcleanertranslationmode'] ) && $_SESSION['glpiticketcleanertranslationmode'] ) {
-         $PLUGIN_HOOKS['add_javascript']['ticketcleaner'] = array('js/locales.js'); 
-         $CFG_GLPI["languages"]['xx_XX']= array('Translation', 'xx_XX.mo', 'xx', 'xx', 'translation' , $DEFAULT_PLURAL_NUMBER);
+      if (isset( $_SESSION['glpiticketcleanertranslationmode'] ) && $_SESSION['glpiticketcleanertranslationmode']) {
+         $PLUGIN_HOOKS['add_javascript']['ticketcleaner'] = ['js/locales.js'];
+         $CFG_GLPI["languages"]['xx_XX']= ['Translation', 'xx_XX.mo', 'xx', 'xx', 'translation' , $DEFAULT_PLURAL_NUMBER];
          $trytoload = 'en_GB';
          if (isset($_SESSION['glpilanguage'])) {
             $trytoload = $_SESSION["glpilanguage"];
@@ -61,7 +61,7 @@ function plugin_init_ticketcleaner() {
          if (empty($trytoload)) {
             $trytoload = $CFG_GLPI["language"];
          }
-         Plugin::loadLang( 'ticketcleaner', 'xx_XX', $trytoload ) ;
+         Plugin::loadLang( 'ticketcleaner', 'xx_XX', $trytoload );
       }
    }
 
@@ -72,14 +72,15 @@ function plugin_init_ticketcleaner() {
  * Summary of plugin_version_ticketcleaner
  * @return name and version of the plugin
  */
-function plugin_version_ticketcleaner(){
+function plugin_version_ticketcleaner() {
    global $LANG;
 
-   return array ('name'           => 'Ticket Cleaner',
-                'version'        => '2.1.0',
+   return  ['name'           => 'Ticket Cleaner',
+                'version'        => PLUGIN_TICKETCLEANER_VERSION,
                 'author'         => 'Olivier Moron',
+                'license'        => 'AGPLv3+',
                 'homepage'       => '',
-                'minGlpiVersion' => '0.85');
+                'minGlpiVersion' => '0.92'];
 }
 
 
@@ -87,21 +88,18 @@ function plugin_version_ticketcleaner(){
  * Summary of plugin_ticketcleaner_check_prerequisites
  * @return false when GLPI version is not ok!
  */
-function plugin_ticketcleaner_check_prerequisites(){
-   if (version_compare(GLPI_VERSION,'0.85','lt') ) {
-      echo "This plugin requires GLPI 0.85 or higher";
+function plugin_ticketcleaner_check_prerequisites() {
+   if (version_compare(GLPI_VERSION, '9.2', 'lt')) {
+      echo "This plugin requires GLPI >= 9.2";
       return false;
-   } else {
-      return true;
    }
+   return true;
 }
 
 /**
  * Summary of plugin_ticketcleaner_check_config
  * @return always true
  */
-function plugin_ticketcleaner_check_config(){
+function plugin_ticketcleaner_check_config() {
    return true;
 }
-
-?>

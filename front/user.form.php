@@ -33,9 +33,9 @@ include (GLPI_ROOT . "/inc/includes.php");
 $pref = new PluginTicketcleanerUser();
 if (isset($_POST["update"])) {
 
-   if( isset($_POST['translationmode']) && $_POST['users_id'] == Session::getLoginUserID()) {
-       $_SESSION['glpiticketcleanertranslationmode'] =   $_POST['translationmode'] ;
-    }
+   if (isset($_POST['translationmode']) && $_POST['users_id'] == Session::getLoginUserID()) {
+       $_SESSION['glpiticketcleanertranslationmode'] =   $_POST['translationmode'];
+   }
 
     Html::back();
 }

@@ -19,69 +19,47 @@
  * Will save the file name and SHA into DB, in table 'glpi_plugin_ticketcleaner_picturehashes'
  * for each file found in the 'pictures' folder
  */
-function loadSha1IntoDB(){
-	global $DB;
 
-	// now fill the table
-	// get files from plugin pictures folder
-	$dir = GLPI_ROOT . "/plugins/ticketcleaner/pictures" ;
-	$files = scandir( $dir ) ;
+function loadSha1IntoDB() {
+    global $DB;
 
-	$lastupdate ="" ;
-	$query = "SELECT * FROM `glpi_plugin_ticketcleaner_picturehashes_lastupdate`;" ;
-	$res = $DB->query($query) ;
-	if($DB->numrows($res) > 0) {
-		$row = $DB->fetch_array($res) ;
-		$lastupdate = $row['lastupdate'];
-	}
+    // now fill the table
+    // get files from plugin pictures folder
+    $dir = GLPI_ROOT . "/plugins/ticketcleaner/pictures";
+    $files = scandir( $dir );
 
-	$stats = stat($dir);
-	$datetime = date( "YmdHis", $stats['mtime'] );
-
-	if( $datetime > $lastupdate ) { // means picture folder has been modified since last update
-		$DB->query("TRUNCATE TABLE glpi_plugin_ticketcleaner_picturehashes") ; //or die("error on 'truncate' glpi_plugin_ticketcleaner_picturehashes ". $DB->error()) ;
-		// compute hash for each file and then insert it in DB with REPLACE INTO to prvent double entries
-		foreach( $files as $pict ){
-			if($pict <> "." && $pict <> "..") {
-				$sha = sha1_file( $dir."/".$pict ) ;
-				$query = "INSERT INTO `glpi_plugin_ticketcleaner_picturehashes` (`hash`, `filename`) VALUES ('".$sha."', '".$pict."');" ;
-				$DB->query($query) or die("error on 'insert' into glpi_plugin_ticketcleaner_picturehashes with ".$pict." hash: ". $DB->error());
-			}
-		}
-
-		if( count($files) )
-			Toolbox::logInFile('TicketCleaner', "Loading of sha1 files from '".$dir."' into DB done.\n" ) ;
-		else
-			Toolbox::logInFile('TicketCleaner', "No files in '".$dir."'.\n" ) ;
-
-		// update of lastupdate into DB, with $datetime
-		$query = "REPLACE INTO `glpi_plugin_ticketcleaner_picturehashes_lastupdate` SET lastupdate='".$datetime."', id=1;" ;
-		$res = $DB->query($query) ;
-
-	}
-}
-
-
-
-if (!function_exists('arTableExists')) {
-   function arTableExists($table) {
-      global $DB;
-      if (method_exists( $DB, 'tableExists')) {
-         return $DB->tableExists($table);
-      } else {
-         return TableExists($table);
-      }
+    $lastupdate ="";
+    $query = "SELECT * FROM `glpi_plugin_ticketcleaner_picturehashes_lastupdate`;";
+    $res = $DB->query($query);
+   if ($DB->numrows($res) > 0) {
+       $row = $DB->fetch_array($res);
+       $lastupdate = $row['lastupdate'];
    }
-}
 
-if (!function_exists('arFieldExists')) {
-   function arFieldExists($table, $field, $usecache = true) {
-      global $DB;
-      if (method_exists( $DB, 'fieldExists')) {
-         return $DB->fieldExists($table, $field, $usecache);
-      } else {
-         return FieldExists($table, $field, $usecache);
+    $stats = stat($dir);
+    $datetime = date( "YmdHis", $stats['mtime'] );
+
+   if ($datetime > $lastupdate) { // means picture folder has been modified since last update
+       $DB->query("TRUNCATE TABLE glpi_plugin_ticketcleaner_picturehashes"); //or die("error on 'truncate' glpi_plugin_ticketcleaner_picturehashes ". $DB->error()) ;
+       // compute hash for each file and then insert it in DB with REPLACE INTO to prvent double entries
+      foreach ($files as $pict) {
+         if ($pict <> "." && $pict <> "..") {
+            $sha = sha1_file( $dir."/".$pict );
+            $query = "INSERT INTO `glpi_plugin_ticketcleaner_picturehashes` (`hash`, `filename`) VALUES ('".$sha."', '".$pict."');";
+            $DB->query($query) or die("error on 'insert' into glpi_plugin_ticketcleaner_picturehashes with ".$pict." hash: ". $DB->error());
+         }
       }
+
+      if (count($files)) {
+         Toolbox::logInFile('TicketCleaner', "Loading of sha1 files from '".$dir."' into DB done.\n" );
+      } else {
+         Toolbox::logInFile('TicketCleaner', "No files in '".$dir."'.\n" );
+      }
+
+         // update of lastupdate into DB, with $datetime
+         $query = "REPLACE INTO `glpi_plugin_ticketcleaner_picturehashes_lastupdate` SET lastupdate='".$datetime."', id=1;";
+         $res = $DB->query($query);
+
    }
 }
 
@@ -92,10 +70,10 @@ if (!function_exists('arFieldExists')) {
  * @return true or 'die'
  */
 function plugin_ticketcleaner_install() {
-	global $DB ;
+    global $DB;
 
-	if (!arTableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
-		$query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate` (
+   if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
+      $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate` (
 				`id` INT(10) NOT NULL AUTO_INCREMENT,
 				`lastupdate` VARCHAR(50) NULL,
 				PRIMARY KEY (`id`)
@@ -104,12 +82,11 @@ function plugin_ticketcleaner_install() {
 			ENGINE=InnoDB;
 			";
 
-		$DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes_lastupdate " . $DB->error());
-	}
+      $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes_lastupdate " . $DB->error());
+   }
 
-
-	if (!arTableExists("glpi_plugin_ticketcleaner_picturehashes")) {
-		$query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes` (
+   if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes")) {
+      $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes` (
 				`id` INT(10) NOT NULL AUTO_INCREMENT,
 				`hash` CHAR(40) NOT NULL,
 				`filename` VARCHAR(255) NOT NULL,
@@ -120,23 +97,23 @@ function plugin_ticketcleaner_install() {
 			ENGINE=InnoDB;
 			";
 
-		$DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes " . $DB->error());
-	}
+      $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes " . $DB->error());
+   }
 
-	loadSha1IntoDB() ; // also done on the fly
+    loadSha1IntoDB(); // also done on the fly
 
-   if (arTableExists("backup_glpi_plugin_ticketcleaner_filters") ) {
+   if ($DB->tableExists("backup_glpi_plugin_ticketcleaner_filters")) {
       $query = "DROP TABLE `backup_glpi_plugin_ticketcleaner_filters`;";
       $DB->query($query) or die("error droping old backup_glpi_plugin_ticketcleaner_filters" . $DB->error());
    }
 
-	if (arTableExists("glpi_plugin_ticketcleaner_filters") && arFieldExists( 'glpi_plugin_ticketcleaner_filters', 'filter' ) ) {
+   if ($DB->tableExists("glpi_plugin_ticketcleaner_filters") && $DB->fieldExists( 'glpi_plugin_ticketcleaner_filters', 'filter' )) {
 
       $query = "RENAME TABLE `glpi_plugin_ticketcleaner_filters` TO `backup_glpi_plugin_ticketcleaner_filters`;";
       $DB->query($query) or die("error renaming glpi_plugin_ticketcleaner_filters to backup_glpi_plugin_ticketcleaner_filters" . $DB->error());
    }
 
-	if (!arTableExists("glpi_plugin_ticketcleaner_filters")) {
+   if (!$DB->tableExists("glpi_plugin_ticketcleaner_filters")) {
       $query = "
             CREATE TABLE `glpi_plugin_ticketcleaner_filters` (
 	                  `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -156,11 +133,11 @@ function plugin_ticketcleaner_install() {
                   ENGINE=InnoDB
                   ;";
 
-		$DB->query($query) or die("error creating glpi_plugin_ticketcleaner_filters " . $DB->error());
+       $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_filters " . $DB->error());
    } else {
       // change regex and replacement field type
-      $fields = $DB->list_fields( 'glpi_plugin_ticketcleaner_filters' ) ;
-      if( strcasecmp( $fields['regex']['Type'], 'text' ) != 0) {
+      $fields = $DB->list_fields( 'glpi_plugin_ticketcleaner_filters' );
+      if (strcasecmp( $fields['regex']['Type'], 'text' ) != 0) {
 
          $query = "ALTER TABLE `glpi_plugin_ticketcleaner_filters`
                   ALTER `regex` DROP DEFAULT,
@@ -170,12 +147,12 @@ function plugin_ticketcleaner_install() {
          $query = "ALTER TABLE `glpi_plugin_ticketcleaner_filters`
                   CHANGE COLUMN `order` `order` INT(11) NULL AFTER `type` ,
                   CHANGE COLUMN `regex` `regex` TEXT NOT NULL AFTER `order` ,
-                  CHANGE COLUMN `replacement` `replacement` TEXT NOT NULL AFTER `regex`;" ;
+                  CHANGE COLUMN `replacement` `replacement` TEXT NOT NULL AFTER `regex`;";
          $DB->query($query) or die("error changing type of 'regex' and 'replacement' in glpi_plugin_ticketcleaner_filters " . $DB->error());
       }
    }
 
-	return true;
+    return true;
 }
 
 
@@ -186,21 +163,20 @@ function plugin_ticketcleaner_install() {
  * @return true or 'die'!
  */
 function plugin_ticketcleaner_uninstall() {
-	global $DB;
+    global $DB;
 
-	// Current version tables
-	if (arTableExists("glpi_plugin_ticketcleaner_picturehashes")) {
-		$query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes`";
-		$DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes");
-	}
+    // Current version tables
+   if ($DB->tableExists("glpi_plugin_ticketcleaner_picturehashes")) {
+      $query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes`";
+      $DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes");
+   }
 
-	if (arTableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
-		$query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate`";
-		$DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes_lastupdate");
-	}
+   if ($DB->tableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
+      $query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate`";
+      $DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes_lastupdate");
+   }
 
-
-	return true;
+    return true;
 }
 
 
@@ -212,8 +188,8 @@ function plugin_ticketcleaner_uninstall() {
  */
 class PluginTicketCleaner {
 
-	/**
-	 * Summary of cleanText
+    /**
+     * Summary of cleanText
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
      * loads filters from DB and applies them to object name and content.
      * Filters are divided into a type and an order
@@ -225,149 +201,165 @@ class PluginTicketCleaner {
      *      3    : filters of this type are used to delete (or replace) any text that will match a regex from name (=title) of Tickets
      * orders (0 - n): used to apply filters in this defined order
      * see filter examples in Plugin website
-	 */
-	public static function cleanText($parm) {
-		global $DB ;
+     */
+   public static function cleanText($parm) {
+       global $DB;
 
-		$is_content =  array_key_exists('content', $parm->input) ;
-		$is_name = array_key_exists('name', $parm->input) ;
+       $is_content = array_key_exists('content', $parm->input);
+       $is_name = array_key_exists('name', $parm->input);
 
-		if( $is_content || $is_name ) {
-			// load filters from DB
-			$filters = array( ) ;
-			$query = "SELECT * FROM glpi_plugin_ticketcleaner_filters WHERE is_active=1 ORDER BY type, `order`;" ;
+      if ($is_content || $is_name) {
+          // load filters from DB
+          $filters = [ ];
+          $query = "SELECT * FROM glpi_plugin_ticketcleaner_filters WHERE is_active=1 ORDER BY type, `order`;";
 
-			// preparation for starts of filter
-			foreach ($DB->request($query) as $filter){
-            $filters[ $filter['type'] ][] = $filter ;
-			}
+          // preparation for starts of filter
+         foreach ($DB->request($query) as $filter) {
+            $filters[ $filter['type'] ][] = $filter;
+         }
 
-		   if( $is_content && isset($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ])) {
-            $temp_content = html_entity_decode( $parm->input['content'], ENT_QUOTES, 'UTF-8');
-            if( isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-               Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" ) ;
+         if ($is_content && isset($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ])) {
+            $temp_content = $parm->input['content'];
+
+            ////////////////////
+            // GLPI fixes
+            // cases of the \r\n or \n for GLPI 9.2, and what about GLPI 9.3?
+            $temp_content = preg_replace('/(\\\\r)?\\\\n/', ';,<br />', $temp_content);
+
+            // cases of the &quot; that are converted into '; instead of " in GLPI 9.2, 9.3 and 9.4
+            $temp_content = str_replace('\\\';', '\\"', $temp_content);
+            // backport of addslashes_deep from GLPI 9.4/bugfixes, completes the one from GLPI 9.2
+            $temp_content = str_replace(['&#39;', '&#x27;'], ["'", "'"], $temp_content);
+            // End of GLPI fixes
+            ////////////////////
+
+            // unsanitize doesn't exist, so reverse one by one the sanitize
+            $temp_content = Toolbox::unclean_cross_side_scripting_deep($temp_content);
+            $temp_content = Toolbox::stripslashes_deep($temp_content);
+            if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+                Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" );
             }
-			   foreach($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ] as $ptn){
+            foreach ($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ] as $ptn) {
                $temp_content = preg_replace( $ptn['regex'], $ptn['replacement'], $temp_content );
-               if( isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-                  Toolbox::logInFile('TicketCleaner', "\tAfter filter: " . $ptn['name'] . "\t text: " . $temp_content . "\n" ) ;
+               if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+                  Toolbox::logInFile('TicketCleaner', "\tAfter filter: " . $ptn['name'] . "\t text: " . $temp_content . "\n" );
                }
-			   }
-            $parm->input['content'] = htmlentities( $temp_content, ENT_QUOTES, 'UTF-8') ;
-		   }
+            }
+            $temp_content = Toolbox::sanitize([$temp_content]); // sanitize only accepts an array
+            $parm->input['content'] = $temp_content[0];
+         }
 
-		   if( $is_name && isset($filters[ PluginTicketcleanerFilter::TITLE_TYPE ]) ) {
-			   foreach($filters[ PluginTicketcleanerFilter::TITLE_TYPE ] as $ptn){
-				   $parm->input['name'] = preg_replace( $ptn['regex'], $ptn['replacement'], $parm->input['name'] ) ;
-			   }
-		   }
+         if ($is_name && isset($filters[ PluginTicketcleanerFilter::TITLE_TYPE ])) {
+            foreach ($filters[ PluginTicketcleanerFilter::TITLE_TYPE ] as $ptn) {
+                $parm->input['name'] = preg_replace( $ptn['regex'], $ptn['replacement'], $parm->input['name'] );
+            }
+         }
 
       }
-	}
+   }
 
-	/**
-	 * Summary of cleanImages
+    /**
+     * Summary of cleanImages
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
      * For each picture a log is written into TicketCleaner log file to indicate
      * if it has been deleted or not
-	 */
-	public static function cleanImages($parm){
-		global $DB;
+     */
+   public static function cleanImages($parm) {
+       global $DB;
 
-		// this ticket has been created via email receiver.
-		// has any FILE attached to it?
-		if( array_key_exists('name', $parm->input)
-			&& array_key_exists('_mailgate', $parm->input)
-			&& array_key_exists('_filename', $parm->input)
-			&& is_array($parm->input['_filename']) ) {
+       // this ticket has been created via email receiver.
+       // has any FILE attached to it?
+      if (array_key_exists('name', $parm->input)
+           && array_key_exists('_mailgate', $parm->input)
+           && array_key_exists('_filename', $parm->input)
+           && is_array($parm->input['_filename']) ) {
 
-			// if necessary will reload sha1
-			loadSha1IntoDB() ;
+          // if necessary will reload sha1
+          loadSha1IntoDB();
 
-			$msg_log = "Ticket: '".$parm->input['name']."'\n";
+          $msg_log = "Ticket: '".$parm->input['name']."'\n";
 
-			// signature FILES are deleted from array $parm->input['_filename']
+          // signature FILES are deleted from array $parm->input['_filename']
 
-			// load pictures signatures from DB
-			$files_hash = array( ) ;
-			$query = "SELECT hash FROM glpi_plugin_ticketcleaner_picturehashes" ;
+          // load pictures signatures from DB
+          $files_hash = [ ];
+          $query = "SELECT hash FROM glpi_plugin_ticketcleaner_picturehashes";
 
-			foreach ($DB->request($query) as $data){
-				$files_hash[] = $data['hash'] ;
-			}
+         foreach ($DB->request($query) as $data) {
+            $files_hash[] = $data['hash'];
+         }
 
-			foreach( $parm->input['_filename'] as $loc_key => $loc_file) {
-            $loc_file = GLPI_TMP_DIR. "/$loc_file" ;
-				$loc_type = Toolbox::getMime( $loc_file ) ;
-				$loc_sha = "";
-				$loc_deleted = false ;
-				if( stripos( $loc_type, "IMAGE/") !== false){
-					$loc_sha = sha1_file( $loc_file ) ;
+         foreach ($parm->input['_filename'] as $loc_key => $loc_file) {
+            $loc_file = GLPI_TMP_DIR. "/$loc_file";
+             $loc_type = Toolbox::getMime( $loc_file );
+             $loc_sha = "";
+             $loc_deleted = false;
+            if (stripos( $loc_type, "IMAGE/") !== false) {
+                $loc_sha = sha1_file( $loc_file );
 
-					if( in_array($loc_sha, $files_hash) ) {
-						unset($parm->input['_filename'][$loc_key]) ;
-						unlink($loc_file);
-                  if( isset( $parm->input['_tag'][$loc_key] ) ) {
+               if (in_array($loc_sha, $files_hash)) {
+                   unset($parm->input['_filename'][$loc_key]);
+                   unlink($loc_file);
+                  if (isset( $parm->input['_tag'][$loc_key] )) {
                      // remove the tag from content
-                     $parm->input['content'] = str_replace( "#".$parm->input['_tag'][$loc_key]."#", "", $parm->input['content'] ) ;
+                     $parm->input['content'] = str_replace( "#".$parm->input['_tag'][$loc_key]."#", "", $parm->input['content'] );
                      unset($parm->input['_tag'][$loc_key]);
                   }
-						$loc_deleted = true ;
-					}
-				}
-				if( $loc_sha <> "" )
-					$msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".($loc_deleted?"True":"False")."'\n" ;
-				else
-					$msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\n" ;
-			}
+                   $loc_deleted = true;
+               }
+            }
+            if ($loc_sha <> "") {
+                $msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".($loc_deleted?"True":"False")."'\n";
+            } else {
+               $msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\n";
+            }
+         }
 
-			Toolbox::logInFile('TicketCleaner', $msg_log ) ;
+            Toolbox::logInFile('TicketCleaner', $msg_log );
 
-		}
-	}
+      }
+   }
 
-	/**
-	 * Summary of plugin_pre_item_add_ticketcleaner
+    /**
+     * Summary of plugin_pre_item_add_ticketcleaner
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-	 */
-	public static function plugin_pre_item_add_ticketcleaner($parm) {
-		global $DB, $GLOBALS ;
+     */
+   public static function plugin_pre_item_add_ticketcleaner($parm) {
+       global $DB, $GLOBALS;
 
-		PluginTicketCleaner::cleanText($parm) ;
+       PluginTicketCleaner::cleanText($parm);
 
-		PluginTicketCleaner::cleanImages($parm) ;
+       PluginTicketCleaner::cleanImages($parm);
 
-	}
+   }
 
-	/**
-	 * Summary of plugin_pre_item_add_ticketcleaner_followup
+    /**
+     * Summary of plugin_pre_item_add_ticketcleaner_followup
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-	 */
-	public static function plugin_pre_item_add_ticketcleaner_followup($parm) {
-		global $DB ;
+     */
+   public static function plugin_pre_item_add_ticketcleaner_followup($parm) {
+       global $DB;
 
-		PluginTicketCleaner::cleanText($parm) ;
+       PluginTicketCleaner::cleanText($parm);
 
-		PluginTicketCleaner::cleanImages($parm) ;
+       PluginTicketCleaner::cleanImages($parm);
 
-	}
+   }
 
-	/**
-	 * Summary of plugin_pre_item_update_ticketcleaner
+    /**
+     * Summary of plugin_pre_item_update_ticketcleaner
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-	 */
-	public static function plugin_pre_item_update_ticketcleaner($parm) {
-		PluginTicketCleaner::cleanText($parm) ;
-	}
+     */
+   public static function plugin_pre_item_update_ticketcleaner($parm) {
+       PluginTicketCleaner::cleanText($parm);
+   }
 
-	/**
-	 * Summary of plugin_pre_item_update_ticketcleaner_followup
+    /**
+     * Summary of plugin_pre_item_update_ticketcleaner_followup
      * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-	 */
-	public static function plugin_pre_item_update_ticketcleaner_followup($parm) {
-		PluginTicketCleaner::cleanText($parm) ;
-	}
+     */
+   public static function plugin_pre_item_update_ticketcleaner_followup($parm) {
+       PluginTicketCleaner::cleanText($parm);
+   }
 
 }
-
-?>

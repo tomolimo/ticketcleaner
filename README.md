@@ -29,3 +29,9 @@ Added a filter to delete file tags from ticket content when files are deleted fr
 
 ## 2.1.0
 Added arTableExists and arFieldExists to be compatible with 9.2
+
+## 2.3.1
+Remove functions for 9.1 compatibility
+
+## 2.3.3
+Fixed issue with the \r\n

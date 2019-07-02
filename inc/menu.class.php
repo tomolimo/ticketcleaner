@@ -13,25 +13,25 @@ class PluginTicketcleanerMenu extends CommonGLPI {
       }
 
       $front_page = "/plugins/ticketcleaner/front";
-      $menu = array();
+      $menu = [];
       $menu['title'] = self::getMenuName();
       $menu['page']  = "$front_page/filter.php";
 
-      $itemtypes = array('PluginTicketcleanerFilter' => 'ticketcleanerfilter');
+      $itemtypes = ['PluginTicketcleanerFilter' => 'ticketcleanerfilter'];
 
       foreach ($itemtypes as $itemtype => $option) {
          $menu['options'][$option]['title']           = $itemtype::getTypeName(Session::getPluralNumber());
-         switch( $itemtype ) {
+         switch ($itemtype) {
             case 'PluginTicketcleanerFilter':
                $menu['options'][$option]['page']            = $itemtype::getSearchURL(false);
                $menu['options'][$option]['links']['search'] = $itemtype::getSearchURL(false);
                if ($itemtype::canCreate()) {
                   $menu['options'][$option]['links']['add'] = $itemtype::getFormURL(false);
                }
-               break ;
+               break;
             default :
                $menu['options'][$option]['page']            = PluginTicketcleanerFilter::getSearchURL(false);
-               break ;
+               break;
          }
 
       }
