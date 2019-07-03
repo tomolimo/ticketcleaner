@@ -220,11 +220,13 @@ class PluginTicketCleaner {
 
          if ($is_content && isset($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ])) {
             $temp_content = $parm->input['content'];
-
+            if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+               Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" );
+            }
             ////////////////////
             // GLPI fixes
             // cases of the \r\n or \n for GLPI 9.2, and what about GLPI 9.3?
-            $temp_content = preg_replace('/(\\\\r)?\\\\n/', ';,<br />', $temp_content);
+            $temp_content = preg_replace('/(\\\\r)?\\\\n/', '<br />', $temp_content);
 
             // cases of the &quot; that are converted into '; instead of " in GLPI 9.2, 9.3 and 9.4
             $temp_content = str_replace('\\\';', '\\"', $temp_content);
@@ -237,7 +239,7 @@ class PluginTicketCleaner {
             $temp_content = Toolbox::unclean_cross_side_scripting_deep($temp_content);
             $temp_content = Toolbox::stripslashes_deep($temp_content);
             if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-                Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" );
+                Toolbox::logInFile('TicketCleaner', "\tText content after un-sanitize: " . $temp_content . "\n" );
             }
             foreach ($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ] as $ptn) {
                $temp_content = preg_replace( $ptn['regex'], $ptn['replacement'], $temp_content );

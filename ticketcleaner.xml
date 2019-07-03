@@ -53,11 +53,11 @@ This plugin adds the possibility to translate it 'inline', see wiki.]]></en>
          <compatibility>9.1</compatibility>
       </version>
       <version>
-         <num>2.3.3</num>
+         <num>2.3.4</num>
          <compatibility>9.2</compatibility>
       </version>
       <version>
-         <num>2.4.0</num>
+         <num>2.4.1</num>
          <compatibility>9.3</compatibility>
       </version>
    </versions>
