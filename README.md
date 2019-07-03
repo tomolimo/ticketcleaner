@@ -4,7 +4,7 @@ New home for Ticket Cleaner GLPi plugin
 Currently mirrors https://forge.glpi-project.org/projects/ticketcleaner
 
 
-# Release 2.1.0
+# 2.1.0
 Beware that, when upgrading from a version lower than 2.0.0, this new release will not keep your existing filters. You'll have to input them again with the new interface that permits to edit them directly into GLPi.
 Your former filters will be copied into a backup table that you may edit via your preferred mySQL query editor (table name is `backup_glpi_plugin_ticketcleaner_filters`).
 You'll have to combine your former filters to get the new ones that will be entered into the new table, or to create new one from scratch.
@@ -35,3 +35,6 @@ Remove functions for 9.1 compatibility
 
 ## 2.3.3
 Fixed issue with the \r\n
+
+## 2.3.4
+Typo fix
