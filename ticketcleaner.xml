@@ -3,7 +3,7 @@
    <name>Ticket Cleaner</name>
    <key>ticketcleaner</key>
    <state>stable</state>
-    <logo></logo>
+   <logo>https://raw.githubusercontent.com/tomolimo/ticketcleaner/master/swipe.png</logo>
    <description>
       <short>
          <fr><![CDATA[Nettoyage des tickets et des suivis de ticket.]]></fr>
@@ -75,12 +75,14 @@ This plugin adds the possibility to translate it 'inline', see wiki.]]></en>
    <license><![CDATA[GPL v2+]]></license>
    <tags>
          <fr>
-           <tag>Ticket</tag>
-           <tag>mail</tag>
+            <tag>Ticket</tag>
+            <tag>Filtre</tag>
+            <tag>mail</tag>
          </fr>
          <en>
            <tag>Ticket</tag>
-           <tag>mail</tag>
+            <tag>Filter</tag>
+            <tag>eMail</tag>
          </en>
    </tags>
 </root>
