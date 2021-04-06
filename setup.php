@@ -1,4 +1,31 @@
 <?php
+/*
+ * -------------------------------------------------------------------------
+Ticket Cleaner plugin
+Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+
+http://www.araymond.com
+-------------------------------------------------------------------------
+
+LICENSE
+
+This file is part of Ticket Cleaner plugin for GLPI.
+
+This file is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This plugin is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this plugin. If not, see <http://www.gnu.org/licenses/>.
+--------------------------------------------------------------------------
+ */
+
 
 // ----------------------------------------------------------------------
 // Original Author of file: Olivier Moron
@@ -8,14 +35,13 @@
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "2.5.1");
+define ("PLUGIN_TICKETCLEANER_VERSION", "3.0.0");
 
 /**
  * Summary of plugin_init_ticketcleaner
  * Initializes class, and plugin hooks
  */
 function plugin_init_ticketcleaner() {
-
    global $PLUGIN_HOOKS, $CFG_GLPI, $DEFAULT_PLURAL_NUMBER;
 
    if ((!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) && !isset($_SESSION['glpiticketcleanertranslationmode'])) {
@@ -27,13 +53,13 @@ function plugin_init_ticketcleaner() {
    $PLUGIN_HOOKS['csrf_compliant']['ticketcleaner'] = true;
 
    $PLUGIN_HOOKS['pre_item_add']['ticketcleaner'] = [
-          'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'],
-          'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup']
-      ];
+         'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner'],
+         'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_add_ticketcleaner_followup']
+   ];
    $PLUGIN_HOOKS['pre_item_update']['ticketcleaner'] = [
-          'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'],
-          'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup']
-      ];
+         'Ticket' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner'],
+         'ITILFollowup' => ['PluginTicketCleaner', 'plugin_pre_item_update_ticketcleaner_followup']
+   ];
 
    $plugin = new Plugin();
    if ($plugin->isInstalled('ticketcleaner')
@@ -43,7 +69,7 @@ function plugin_init_ticketcleaner() {
 
       // show tab in user config to show translation switch
       Plugin::registerClass('PluginTicketcleanerUser',
-                               ['addtabon'                    => ['Preference', 'User']]);
+                            ['addtabon' => ['Preference', 'User']]);
 
       // Display a menu entry
       $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = ['config' => 'PluginTicketcleanerMenu'];
@@ -73,14 +99,20 @@ function plugin_init_ticketcleaner() {
  * @return name and version of the plugin
  */
 function plugin_version_ticketcleaner() {
-   global $LANG;
+   //global $LANG;
 
    return  ['name'           => 'Ticket Cleaner',
-                'version'        => PLUGIN_TICKETCLEANER_VERSION,
-                'author'         => 'Olivier Moron',
-                'license'        => 'AGPLv3+',
-                'homepage'       => '',
-                'minGlpiVersion' => '0.92'];
+               'version'        => PLUGIN_TICKETCLEANER_VERSION,
+               'author'         => 'Olivier Moron',
+               'license'        => 'GPLv3+',
+               'homepage'       => 'https://github.com/tomolimo/ticketcleaner',
+               'requirements'   => [
+                  'glpi'   => [
+                     'min' => '9.5',
+                     'max' => '9.6'
+                  ],
+               ]
+            ];
 }
 
 
@@ -89,8 +121,8 @@ function plugin_version_ticketcleaner() {
  * @return false when GLPI version is not ok!
  */
 function plugin_ticketcleaner_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.2', 'lt')) {
-      echo "This plugin requires GLPI >= 9.2";
+   if (version_compare(GLPI_VERSION, '9.5', 'lt') || version_compare(GLPI_VERSION, '9.6', 'ge')) {
+      echo "This plugin requires GLPI >= 9.5 and < 9.6";
       return false;
    }
    return true;
@@ -98,7 +130,7 @@ function plugin_ticketcleaner_check_prerequisites() {
 
 /**
  * Summary of plugin_ticketcleaner_check_config
- * @return always true
+ * @return true
  */
 function plugin_ticketcleaner_check_config() {
    return true;

@@ -1,4 +1,30 @@
 <?php
+/*
+ * -------------------------------------------------------------------------
+Ticket Cleaner plugin
+Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+
+http://www.araymond.com
+-------------------------------------------------------------------------
+
+LICENSE
+
+This file is part of Ticket Cleaner plugin for GLPI.
+
+This file is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This plugin is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this plugin. If not, see <http://www.gnu.org/licenses/>.
+--------------------------------------------------------------------------
+ */
 
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
@@ -282,9 +308,11 @@ class PluginTicketcleanerFilter extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__("Name")."&nbsp;:</td>";
-      echo "<td><input type='text' size='50' maxlength=250 name='name' value='".htmlentities($this->fields["name"], ENT_QUOTES)."'></td>";
+      //      echo "<td><input type='text' size='50' maxlength=250 name='name' value='".htmlentities($this->fields["name"], ENT_QUOTES)."'></td>";
+      echo "<td><input type='text' size='50' maxlength=250 name='name' value='".$this->fields["name"]."'></td>";
       echo "<td rowspan='4' class='middle'>".__("Comments")."&nbsp;:</td>";
-      echo "<td class='center middle' rowspan='4'><textarea cols='40' rows='4' name='comment' >".htmlentities($this->fields["comment"], ENT_QUOTES)."</textarea></td>";
+      //      echo "<td class='center middle' rowspan='4'><textarea cols='40' rows='4' name='comment' >".htmlentities($this->fields["comment"], ENT_QUOTES)."</textarea></td>";
+      echo "<td class='center middle' rowspan='4'><textarea cols='40' rows='4' name='comment' >".$this->fields["comment"]."</textarea></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";

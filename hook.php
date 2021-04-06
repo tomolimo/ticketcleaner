@@ -1,4 +1,30 @@
 <?php
+/*
+ * -------------------------------------------------------------------------
+Ticket Cleaner plugin
+Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+
+http://www.araymond.com
+-------------------------------------------------------------------------
+
+LICENSE
+
+This file is part of Ticket Cleaner plugin for GLPI.
+
+This file is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This plugin is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this plugin. If not, see <http://www.gnu.org/licenses/>.
+--------------------------------------------------------------------------
+ */
 
 // ----------------------------------------------------------------------
 // Original Author of file: Olivier Moron
@@ -8,6 +34,7 @@
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
+
 
 /**
  * Summary of loadSha1IntoDB
@@ -19,34 +46,39 @@
  * Will save the file name and SHA into DB, in table 'glpi_plugin_ticketcleaner_picturehashes'
  * for each file found in the 'pictures' folder
  */
-
 function loadSha1IntoDB() {
-    global $DB;
+   global $DB;
 
-    // now fill the table
-    // get files from plugin pictures folder
-    $dir = GLPI_ROOT . "/plugins/ticketcleaner/pictures";
-    $files = scandir( $dir );
+   // now fill the table
+   // get files from plugin pictures folder
+   $dir = GLPI_ROOT . "/plugins/ticketcleaner/pictures";
+   $files = scandir( $dir );
 
-    $lastupdate ="";
-    $query = "SELECT * FROM `glpi_plugin_ticketcleaner_picturehashes_lastupdate`;";
-    $res = $DB->query($query);
-   if ($DB->numrows($res) > 0) {
-       $row = $DB->fetch_array($res);
-       $lastupdate = $row['lastupdate'];
+   $lastupdate ="";
+   $res = $DB->request('glpi_plugin_ticketcleaner_picturehashes_lastupdate');
+   if ($res->numrows() > 0) {
+      //$row = $DB->fetch_array($res);
+      $row = $res->next();
+      $lastupdate = $row['lastupdate'];
    }
 
-    $stats = stat($dir);
-    $datetime = date( "YmdHis", $stats['mtime'] );
+   $stats = stat($dir);
+   $datetime = date( "YmdHis", $stats['mtime'] );
 
    if ($datetime > $lastupdate) { // means picture folder has been modified since last update
-       $DB->query("TRUNCATE TABLE glpi_plugin_ticketcleaner_picturehashes"); //or die("error on 'truncate' glpi_plugin_ticketcleaner_picturehashes ". $DB->error()) ;
-       // compute hash for each file and then insert it in DB with REPLACE INTO to prvent double entries
+      $DB->query("TRUNCATE TABLE glpi_plugin_ticketcleaner_picturehashes"); //or die("error on 'truncate' glpi_plugin_ticketcleaner_picturehashes ". $DB->error()) ;
+      // compute hash for each file and then insert it in DB with REPLACE INTO to prvent double entries
       foreach ($files as $pict) {
          if ($pict <> "." && $pict <> "..") {
             $sha = sha1_file( $dir."/".$pict );
-            $query = "INSERT INTO `glpi_plugin_ticketcleaner_picturehashes` (`hash`, `filename`) VALUES ('".$sha."', '".$pict."');";
-            $DB->query($query) or die("error on 'insert' into glpi_plugin_ticketcleaner_picturehashes with ".$pict." hash: ". $DB->error());
+            $DB->insertOrDie(
+                     'glpi_plugin_ticketcleaner_picturehashes',
+                     [
+                        'hash' => $sha,
+                        'filename' => $pict
+                     ],
+                     "error on 'insert' into glpi_plugin_ticketcleaner_picturehashes with ".$pict." hash: ". $DB->error()
+            );
          }
       }
 
@@ -56,12 +88,16 @@ function loadSha1IntoDB() {
          Toolbox::logInFile('TicketCleaner', "No files in '".$dir."'.\n" );
       }
 
-         // update of lastupdate into DB, with $datetime
-         $query = "REPLACE INTO `glpi_plugin_ticketcleaner_picturehashes_lastupdate` SET lastupdate='".$datetime."', id=1;";
-         $res = $DB->query($query);
+      // update of lastupdate into DB, with $datetime
+      $DB->update(
+         'glpi_plugin_ticketcleaner_picturehashes_lastupdate',
+         ['lastupdate' => $datetime],
+         ['id=1']
+      );
 
    }
 }
+
 
 /**
  * Summary of plugin_ticketcleaner_install
@@ -100,7 +136,7 @@ function plugin_ticketcleaner_install() {
       $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes " . $DB->error());
    }
 
-    loadSha1IntoDB(); // also done on the fly
+   loadSha1IntoDB(); // also done on the fly
 
    if ($DB->tableExists("backup_glpi_plugin_ticketcleaner_filters")) {
       $query = "DROP TABLE `backup_glpi_plugin_ticketcleaner_filters`;";
@@ -133,10 +169,11 @@ function plugin_ticketcleaner_install() {
                   ENGINE=InnoDB
                   ;";
 
-       $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_filters " . $DB->error());
+      $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_filters " . $DB->error());
+
    } else {
       // change regex and replacement field type
-      $fields = $DB->list_fields( 'glpi_plugin_ticketcleaner_filters' );
+      $fields = $DB->listFields( 'glpi_plugin_ticketcleaner_filters' );
       if (strcasecmp( $fields['regex']['Type'], 'text' ) != 0) {
 
          $query = "ALTER TABLE `glpi_plugin_ticketcleaner_filters`
@@ -149,10 +186,11 @@ function plugin_ticketcleaner_install() {
                   CHANGE COLUMN `regex` `regex` TEXT NOT NULL AFTER `order` ,
                   CHANGE COLUMN `replacement` `replacement` TEXT NOT NULL AFTER `regex`;";
          $DB->query($query) or die("error changing type of 'regex' and 'replacement' in glpi_plugin_ticketcleaner_filters " . $DB->error());
+
       }
    }
 
-    return true;
+   return true;
 }
 
 
@@ -165,7 +203,7 @@ function plugin_ticketcleaner_install() {
 function plugin_ticketcleaner_uninstall() {
     global $DB;
 
-    // Current version tables
+   // Current version tables
    if ($DB->tableExists("glpi_plugin_ticketcleaner_picturehashes")) {
       $query = "DROP TABLE `glpi_plugin_ticketcleaner_picturehashes`";
       $DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes");
@@ -176,7 +214,7 @@ function plugin_ticketcleaner_uninstall() {
       $DB->query($query) or die("error deleting glpi_plugin_ticketcleaner_picturehashes_lastupdate");
    }
 
-    return true;
+   return true;
 }
 
 
@@ -188,175 +226,203 @@ function plugin_ticketcleaner_uninstall() {
  */
 class PluginTicketCleaner {
 
-    /**
-     * Summary of cleanText
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     * loads filters from DB and applies them to object name and content.
-     * Filters are divided into a type and an order
-     * types (0 - 3):
-     *      0 - 1: filters of this type are used to delete any signature from content of ticket or content of follow-ups
-     *          0: regex for begin of signature
-     *          1: regex for end of signature
-     *      2    : filters of this type are used to delete (or replace) any text that will match a regex from content of Tickets or content of Followups
-     *      3    : filters of this type are used to delete (or replace) any text that will match a regex from name (=title) of Tickets
-     * orders (0 - n): used to apply filters in this defined order
-     * see filter examples in Plugin website
-     */
+   /**
+    * Summary of cleanText
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    * loads filters from DB and applies them to object name and content.
+    * Filters are divided into a type and an order
+    * types (0 - 3):
+    *      0 - 1: filters of this type are used to delete any signature from content of ticket or content of follow-ups
+    *          0: regex for begin of signature
+    *          1: regex for end of signature
+    *      2    : filters of this type are used to delete (or replace) any text that will match a regex from content of Tickets or content of Followups
+    *      3    : filters of this type are used to delete (or replace) any text that will match a regex from name (=title) of Tickets
+    * orders (0 - n): used to apply filters in this defined order
+    * see filter examples in Plugin website
+   */
    public static function cleanText($parm) {
-       global $DB;
+      global $DB;
 
-       $is_content = array_key_exists('content', $parm->input);
-       $is_name = array_key_exists('name', $parm->input);
+      $is_content = array_key_exists('content', $parm->input);
+      $is_name = array_key_exists('name', $parm->input);
 
       if ($is_content || $is_name) {
-          // load filters from DB
-          $filters = [ ];
-          $query = "SELECT * FROM glpi_plugin_ticketcleaner_filters WHERE is_active=1 ORDER BY type, `order`;";
+         // load filters from DB
+         $filters = [ ];
+         $res = $DB->request([
+                     'FROM' => 'glpi_plugin_ticketcleaner_filters',
+                     'WHERE'=> [
+                        'is_active' => 1
+                     ],
+                     'ORDER'=> ['type', 'order']
+            ]);
 
-          // preparation for starts of filter
-         foreach ($DB->request($query) as $filter) {
+         // preparation for starts of filter
+         //foreach ($DB->request($query) as $filter) {
+         foreach ($res as $filter) {
             $filters[ $filter['type'] ][] = $filter;
          }
 
+         $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
+
          if ($is_content && isset($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ])) {
             $temp_content = $parm->input['content'];
-            if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+            if ($is_debug) {
                Toolbox::logInFile('TicketCleaner', "\tInitial text content: " . $temp_content . "\n" );
             }
-            ////////////////////
-            // GLPI fixes
-            // cases of the &quot; that are converted into '; instead of " in GLPI 9.2, 9.3 and 9.4
-            $temp_content = str_replace('\\\';', '\\"', $temp_content);
-            // End of GLPI fixes
-            ////////////////////
 
             // unsanitize doesn't exist, so reverse one by one the sanitize
             $temp_content = Toolbox::unclean_cross_side_scripting_deep($temp_content);
             $temp_content = Toolbox::stripslashes_deep($temp_content);
-            if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
+            if ($is_debug) {
                 Toolbox::logInFile('TicketCleaner', "\tText content after un-sanitize: " . $temp_content . "\n" );
             }
+            $did_something = false;
             foreach ($filters[ PluginTicketcleanerFilter::DESCRIPTION_TYPE ] as $ptn) {
-               $temp_content = preg_replace( $ptn['regex'], $ptn['replacement'], $temp_content );
-               if (isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)) {
-                  Toolbox::logInFile('TicketCleaner', "\tAfter filter: " . $ptn['name'] . "\t text: " . $temp_content . "\n" );
+               $temp_content_new = preg_replace( $ptn['regex'], $ptn['replacement'], $temp_content );
+               if ($temp_content_new != $temp_content) {
+                  $did_something = true;
+                  $temp_content = $temp_content_new;
+                  if ($is_debug) {
+                     Toolbox::logInFile('TicketCleaner', "\tText content after filter: " . $ptn['name'] . "\t content: " . $temp_content . "\n" );
+                  }
                }
             }
-            $temp_content = Toolbox::sanitize([$temp_content]); // sanitize only accepts an array
-            $parm->input['content'] = $temp_content[0];
+            if ($did_something) {
+               $temp_content = Toolbox::sanitize([$temp_content]); // sanitize only accepts an array
+               $parm->input['content'] = $temp_content[0];
+            }
          }
 
          if ($is_name && isset($filters[ PluginTicketcleanerFilter::TITLE_TYPE ])) {
+            if ($is_debug) {
+               Toolbox::logInFile('TicketCleaner', "\tInitial text title: " . $parm->input['name'] . "\n" );
+            }
+            $temp_title = $parm->input['name'];
+            $did_something = false;
             foreach ($filters[ PluginTicketcleanerFilter::TITLE_TYPE ] as $ptn) {
-                $parm->input['name'] = preg_replace( $ptn['regex'], $ptn['replacement'], $parm->input['name'] );
+               $temp_title_new = preg_replace( $ptn['regex'], $ptn['replacement'], $temp_title );
+               if ($temp_title_new != $temp_title) {
+                  $temp_title = $temp_title_new;
+                  $did_something = true;
+                  if ($is_debug) {
+                     Toolbox::logInFile('TicketCleaner', "\tText title after filter: " . $ptn['name'] . "\t title: " . $temp_title . "\n" );
+                  }
+               }
+            }
+            if ($did_something) {
+               $parm->input['name'] = $temp_title;
             }
          }
 
       }
    }
 
-    /**
-     * Summary of cleanImages
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     * For each picture a log is written into TicketCleaner log file to indicate
-     * if it has been deleted or not
-     */
-   public static function cleanImages($parm) {
-       global $DB;
 
-       // this ticket has been created via email receiver.
-       // has any FILE attached to it?
+   /**
+    * Summary of cleanImages
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    * For each picture a log is written into TicketCleaner log file to indicate
+    * if it has been deleted or not
+    */
+   public static function cleanImages($parm) {
+      global $DB;
+
+      // this ticket has been created via email receiver.
+      // has any FILE attached to it?
       if (array_key_exists('name', $parm->input)
            && array_key_exists('_mailgate', $parm->input)
            && array_key_exists('_filename', $parm->input)
            && is_array($parm->input['_filename']) ) {
 
-          // if necessary will reload sha1
-          loadSha1IntoDB();
+         // if necessary will reload sha1
+         loadSha1IntoDB();
 
-          $msg_log = "Ticket: '".$parm->input['name']."'\n";
+         $msg_log = "Ticket: '".$parm->input['name']."'\n";
 
-          // signature FILES are deleted from array $parm->input['_filename']
+         // signature FILES are deleted from array $parm->input['_filename']
 
-          // load pictures signatures from DB
-          $files_hash = [ ];
-          $query = "SELECT hash FROM glpi_plugin_ticketcleaner_picturehashes";
+         // load pictures signatures from DB
+         $files_hash = [ ];
+         $res = $DB->request([
+                     'SELECT' => 'hash',
+                     'FROM'   => 'glpi_plugin_ticketcleaner_picturehashes'
+         ]);
 
-         foreach ($DB->request($query) as $data) {
+         foreach ($res as $data) {
             $files_hash[] = $data['hash'];
          }
 
          foreach ($parm->input['_filename'] as $loc_key => $loc_file) {
             $loc_file = GLPI_TMP_DIR. "/$loc_file";
-             $loc_type = Toolbox::getMime( $loc_file );
-             $loc_sha = "";
-             $loc_deleted = false;
+            $loc_type = Toolbox::getMime( $loc_file );
+            $loc_sha = "";
+            $loc_deleted = false;
             if (stripos( $loc_type, "IMAGE/") !== false) {
-                $loc_sha = sha1_file( $loc_file );
+               $loc_sha = sha1_file( $loc_file );
 
                if (in_array($loc_sha, $files_hash)) {
-                   unset($parm->input['_filename'][$loc_key]);
-                   unlink($loc_file);
+                  unset($parm->input['_filename'][$loc_key]);
+                  unlink($loc_file);
                   if (isset( $parm->input['_tag'][$loc_key] )) {
                      // remove the tag from content
                      $parm->input['content'] = str_replace( "#".$parm->input['_tag'][$loc_key]."#", "", $parm->input['content'] );
                      unset($parm->input['_tag'][$loc_key]);
                   }
-                   $loc_deleted = true;
+                  $loc_deleted = true;
                }
             }
             if ($loc_sha <> "") {
-                $msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".($loc_deleted?"True":"False")."'\n";
+               $msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\tsha1: '".$loc_sha."'\tdeleted: '".($loc_deleted?"True":"False")."'\n";
             } else {
                $msg_log .= "\tFile: '".$loc_file."'\ttype: '".$loc_type."'\n";
             }
          }
 
-            Toolbox::logInFile('TicketCleaner', $msg_log );
+         Toolbox::logInFile('TicketCleaner', $msg_log );
 
       }
    }
 
-    /**
-     * Summary of plugin_pre_item_add_ticketcleaner
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     */
+
+   /**
+    * Summary of plugin_pre_item_add_ticketcleaner
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    */
    public static function plugin_pre_item_add_ticketcleaner($parm) {
-       global $DB, $GLOBALS;
+      PluginTicketCleaner::cleanText($parm);
 
-       PluginTicketCleaner::cleanText($parm);
-
-       PluginTicketCleaner::cleanImages($parm);
+      PluginTicketCleaner::cleanImages($parm);
 
    }
 
-    /**
-     * Summary of plugin_pre_item_add_ticketcleaner_followup
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     */
+
+   /**
+    * Summary of plugin_pre_item_add_ticketcleaner_followup
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    */
    public static function plugin_pre_item_add_ticketcleaner_followup($parm) {
-       global $DB;
+      PluginTicketCleaner::cleanText($parm);
 
-       PluginTicketCleaner::cleanText($parm);
-
-       PluginTicketCleaner::cleanImages($parm);
+      PluginTicketCleaner::cleanImages($parm);
 
    }
 
-    /**
-     * Summary of plugin_pre_item_update_ticketcleaner
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     */
+
+   /**
+    * Summary of plugin_pre_item_update_ticketcleaner
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    */
    public static function plugin_pre_item_update_ticketcleaner($parm) {
-       PluginTicketCleaner::cleanText($parm);
+      PluginTicketCleaner::cleanText($parm);
    }
 
-    /**
-     * Summary of plugin_pre_item_update_ticketcleaner_followup
-     * @param $parm contains current object (i.e. a Ticket or a TicketFollowup)
-     */
+   /**
+    * Summary of plugin_pre_item_update_ticketcleaner_followup
+    * @param $parm CommonDBTM contains current object (i.e. a Ticket or a TicketFollowup)
+    */
    public static function plugin_pre_item_update_ticketcleaner_followup($parm) {
-       PluginTicketCleaner::cleanText($parm);
+      PluginTicketCleaner::cleanText($parm);
    }
 
 }
