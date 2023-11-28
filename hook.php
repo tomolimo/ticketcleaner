@@ -2,9 +2,9 @@
 /*
  * -------------------------------------------------------------------------
 Ticket Cleaner plugin
-Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+Copyright (C) 2016-2023 by Raynet SAS a company of A.Raymond Network.
 
-http://www.araymond.com
+https://www.araymond.com
 -------------------------------------------------------------------------
 
 LICENSE
@@ -111,28 +111,28 @@ function plugin_ticketcleaner_install() {
 
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
       $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate` (
-				`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`lastupdate` VARCHAR(50) NULL,
-				PRIMARY KEY (`id`)
-			)
-			COLLATE='utf8_general_ci'
-			ENGINE=InnoDB;
-			";
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `lastupdate` VARCHAR(50) NULL,
+                PRIMARY KEY (`id`)
+            )
+            COLLATE='utf8_general_ci'
+            ENGINE=InnoDB;
+            ";
 
       $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes_lastupdate " . $DB->error());
    }
 
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes")) {
       $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes` (
-				`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`hash` CHAR(40) NOT NULL,
-				`filename` VARCHAR(255) NOT NULL,
-				PRIMARY KEY (`id`),
-				INDEX `hash` (`hash`)
-			)
-			COLLATE='utf8_general_ci'
-			ENGINE=InnoDB;
-			";
+                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `hash` CHAR(40) NOT NULL,
+                `filename` VARCHAR(255) NOT NULL,
+                PRIMARY KEY (`id`),
+                INDEX `hash` (`hash`)
+            )
+            COLLATE='utf8_general_ci'
+            ENGINE=InnoDB;
+            ";
 
       $DB->query($query) or die("error creating glpi_plugin_ticketcleaner_picturehashes " . $DB->error());
    }
@@ -153,17 +153,17 @@ function plugin_ticketcleaner_install() {
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_filters")) {
       $query = "
             CREATE TABLE `glpi_plugin_ticketcleaner_filters` (
-	                  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	                  `name` VARCHAR(255) NOT NULL,
-	                  `type` INT(1) NOT NULL DEFAULT '1',
-	                  `order` INT UNSIGNED NULL,
-	                  `regex` TEXT NOT NULL,
-	                  `replacement` TEXT NOT NULL,
-	                  `is_active` INT(1) NOT NULL DEFAULT '0',
-	                  `comment` TEXT NULL,
-	                  `date_mod` TIMESTAMP NULL DEFAULT NULL,
-	                  PRIMARY KEY (`id`),
-	                  INDEX `type` (`type`),
+                      `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                      `name` VARCHAR(255) NOT NULL,
+                      `type` INT(1) NOT NULL DEFAULT '1',
+                      `order` INT UNSIGNED NULL,
+                      `regex` TEXT NOT NULL,
+                      `replacement` TEXT NOT NULL,
+                      `is_active` INT(1) NOT NULL DEFAULT '0',
+                      `comment` TEXT NULL,
+                      `date_mod` TIMESTAMP NULL DEFAULT NULL,
+                      PRIMARY KEY (`id`),
+                      INDEX `type` (`type`),
                      INDEX `order` (`order`)
                   )
                   COLLATE='utf8_general_ci'
@@ -274,7 +274,7 @@ class PluginTicketCleaner {
 
             // unsanitize doesn't exist, so reverse one by one the sanitize
             $temp_content = Sanitizer::decodeHtmlSpecialCharsRecursive([$temp_content]);
-            $temp_content = Toolbox::stripslashes_deep($temp_content[0]);
+            $temp_content = $temp_content[0];
             if ($is_debug) {
                 Toolbox::logInFile('TicketCleaner', "\tText content after un-sanitize: " . $temp_content . "\n" );
             }

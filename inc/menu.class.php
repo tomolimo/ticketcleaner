@@ -2,9 +2,9 @@
 /*
  * -------------------------------------------------------------------------
 Ticket Cleaner plugin
-Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+Copyright (C) 2016-2023 by Raynet SAS a company of A.Raymond Network.
 
-http://www.araymond.com
+https://www.araymond.com
 -------------------------------------------------------------------------
 
 LICENSE
