@@ -26,6 +26,8 @@ along with this plugin. If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------
  */
 
+use Glpi\Toolbox\Sanitizer;
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
@@ -308,26 +310,23 @@ class PluginTicketcleanerFilter extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__("Name")."&nbsp;:</td>";
-      //      echo "<td><input type='text' size='50' maxlength=250 name='name' value='".htmlentities($this->fields["name"], ENT_QUOTES)."'></td>";
       echo "<td><input type='text' size='50' maxlength=250 name='name' value='".$this->fields["name"]."'></td>";
       echo "<td rowspan='4' class='middle'>".__("Comments")."&nbsp;:</td>";
-      //      echo "<td class='center middle' rowspan='4'><textarea cols='40' rows='4' name='comment' >".htmlentities($this->fields["comment"], ENT_QUOTES)."</textarea></td>";
       echo "<td class='center middle' rowspan='4'><textarea cols='40' rows='4' name='comment' >".$this->fields["comment"]."</textarea></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__("Active")."&nbsp;:</td>";
       echo "<td>";
-      Html::showCheckbox(['name'           => 'is_active',
-                                     'checked'        => $this->fields['is_active']
-                                     ]);
+      Html::showCheckbox(['name'    => 'is_active',
+                          'checked' => $this->fields['is_active']
+                         ]);
       echo "</td></tr>";
 
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__('Type', 'ticketcleaner')."&nbsp;:</td>";
-      //echo "<td><input type='text' size='50' maxlength=200 name='type' value='".$this->fields["type"]."'></td>";
       echo "<td>";
       $opt = ['value' => $this->fields["type"]];
       self::dropdownType('type', $opt);
@@ -342,14 +341,12 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__('RegEx', 'ticketcleaner')."&nbsp;:</td>";
 
-      //echo "<td colspan=3><input type='text' size='150' maxlength=255 name='regex' value='".htmlentities($this->fields["regex"], ENT_QUOTES)."'></td>";
-      echo "<td colspan=3><textarea cols='150' rows='7' name='regex' >".htmlentities($this->fields["regex"], ENT_QUOTES)."</textarea></td>";
+      echo "<td colspan=3><textarea cols='150' rows='7' name='regex' >".Sanitizer::decodeHtmlSpecialChars($this->fields["regex"])."</textarea></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td >".__("Replacement", 'ticketcleaner')."&nbsp;:</td>";
-      //echo "<td colspan=3><input type='text' size='150' maxlength=255 name='replacement' value='". htmlentities($this->fields["replacement"], ENT_QUOTES)."'></td>";
-      echo "<td colspan=3><textarea cols='150' rows='7' name='replacement' >".htmlentities($this->fields["replacement"], ENT_QUOTES)."</textarea></td>";
+      echo "<td colspan=3><textarea cols='150' rows='7' name='replacement' >".Sanitizer::decodeHtmlSpecialChars($this->fields["replacement"])."</textarea></td>";
       echo "</tr>";
 
       if (version_compare(GLPI_VERSION, '9.1', 'lt')) {
@@ -366,25 +363,7 @@ class PluginTicketcleanerFilter extends CommonDBTM {
       echo "</tr>";
 
       $this->showFormButtons($options );
-      //$this->addDivForTabs();
-
    }
-
-   function prepareInputForAdd($input) {
-      if (isset( $input['regex'] )) {
-         $input['regex'] = html_entity_decode( $input['regex']);
-      }
-      return $input;
-   }
-
-   function prepareInputForUpdate($input) {
-      if (isset( $input['regex'] )) {
-         $input['regex'] = html_entity_decode( $input['regex']);
-      }
-
-      return $input;
-   }
-
 
 }
 

@@ -69,7 +69,7 @@ This plugin adds the possibility to translate it 'inline', see wiki.]]></en>
          <compatibility>9.5</compatibility>
       </version>
 	  <version>
-         <num>4.0.1</num>
+         <num>4.0.2</num>
          <compatibility>10.0</compatibility>
       </version>
    </versions>
