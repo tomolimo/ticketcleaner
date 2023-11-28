@@ -3,7 +3,7 @@ Home for Ticket Cleaner GLPI plugin
 
 See wiki for filter explanations: https://github.com/tomolimo/ticketcleaner/wiki
 
-## 4.0.1
+## 4.0.2
 GLPI 10.0 compatible release
 
 ## 3.0.0

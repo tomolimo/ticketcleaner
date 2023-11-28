@@ -259,9 +259,8 @@ class PluginTicketCleaner {
             ]);
 
          // preparation for starts of filter
-         //foreach ($DB->request($query) as $filter) {
          foreach ($res as $filter) {
-            $filters[ $filter['type'] ][] = $filter;
+            $filters[$filter['type']][] = Sanitizer::decodeHtmlSpecialCharsRecursive($filter);
          }
 
          $is_debug = isset($_SESSION['glpi_use_mode']) && ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE);
@@ -273,8 +272,7 @@ class PluginTicketCleaner {
             }
 
             // unsanitize doesn't exist, so reverse one by one the sanitize
-            $temp_content = Sanitizer::decodeHtmlSpecialCharsRecursive([$temp_content]);
-            $temp_content = $temp_content[0];
+            $temp_content = Sanitizer::decodeHtmlSpecialChars($temp_content);
             if ($is_debug) {
                 Toolbox::logInFile('TicketCleaner', "\tText content after un-sanitize: " . $temp_content . "\n" );
             }
