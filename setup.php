@@ -2,9 +2,9 @@
 /*
  * -------------------------------------------------------------------------
 Ticket Cleaner plugin
-Copyright (C) 2016-2022 by Raynet SAS a company of A.Raymond Network.
+Copyright (C) 2016-2023 by Raynet SAS a company of A.Raymond Network.
 
-http://www.araymond.com
+https://www.araymond.com
 -------------------------------------------------------------------------
 
 LICENSE
@@ -35,7 +35,7 @@ along with this plugin. If not, see <http://www.gnu.org/licenses/>.
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "4.0.0");
+define ("PLUGIN_TICKETCLEANER_VERSION", "4.0.1");
 define ("PLUGIN_TICKETCLEANER_VERSION_MIN", "10.0");
 define ("PLUGIN_TICKETCLEANER_VERSION_MAX", "11.0");
 
