@@ -2,7 +2,7 @@
 /*
  * -------------------------------------------------------------------------
 Ticket Cleaner plugin
-Copyright (C) 2016-2021 by Raynet SAS a company of A.Raymond Network.
+Copyright (C) 2016-2022 by Raynet SAS a company of A.Raymond Network.
 
 http://www.araymond.com
 -------------------------------------------------------------------------
@@ -35,20 +35,18 @@ along with this plugin. If not, see <http://www.gnu.org/licenses/>.
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "3.0.0");
+define ("PLUGIN_TICKETCLEANER_VERSION", "4.0.0");
+define ("PLUGIN_TICKETCLEANER_VERSION_MIN", "10.0");
+define ("PLUGIN_TICKETCLEANER_VERSION_MAX", "11.0");
 
 /**
  * Summary of plugin_init_ticketcleaner
  * Initializes class, and plugin hooks
  */
 function plugin_init_ticketcleaner() {
-   global $PLUGIN_HOOKS, $CFG_GLPI, $DEFAULT_PLURAL_NUMBER;
+   global $PLUGIN_HOOKS;
 
-   if ((!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) && !isset($_SESSION['glpiticketcleanertranslationmode'])) {
-      $_SESSION['glpiticketcleanertranslationmode'] = 0;
-   }
-
-   Plugin::registerClass('PluginTicketCleaner', ['classname' => 'PluginTicketCleaner']);
+   Plugin::registerClass('PluginTicketCleaner');
 
    $PLUGIN_HOOKS['csrf_compliant']['ticketcleaner'] = true;
 
@@ -67,28 +65,11 @@ function plugin_init_ticketcleaner() {
        && Session::getLoginUserID()
        && Config::canUpdate()) {
 
-      // show tab in user config to show translation switch
-      Plugin::registerClass('PluginTicketcleanerUser',
-                            ['addtabon' => ['Preference', 'User']]);
+      // show tab in user config
+      Plugin::registerClass('PluginTicketcleanerUser');
 
       // Display a menu entry
       $PLUGIN_HOOKS['menu_toadd']['ticketcleaner'] = ['config' => 'PluginTicketcleanerMenu'];
-
-      // if translation mode is ON, then add translation xx_XX fake language to session
-      if (isset( $_SESSION['glpiticketcleanertranslationmode'] ) && $_SESSION['glpiticketcleanertranslationmode']) {
-         $PLUGIN_HOOKS['add_javascript']['ticketcleaner'] = ['js/locales.js'];
-         $CFG_GLPI["languages"]['xx_XX']= ['Translation', 'xx_XX.mo', 'xx', 'xx', 'translation' , $DEFAULT_PLURAL_NUMBER];
-         $trytoload = 'en_GB';
-         if (isset($_SESSION['glpilanguage'])) {
-            $trytoload = $_SESSION["glpilanguage"];
-         }
-
-         // If not set try default lang file
-         if (empty($trytoload)) {
-            $trytoload = $CFG_GLPI["language"];
-         }
-         Plugin::loadLang( 'ticketcleaner', 'xx_XX', $trytoload );
-      }
    }
 
 }
@@ -96,7 +77,7 @@ function plugin_init_ticketcleaner() {
 
 /**
  * Summary of plugin_version_ticketcleaner
- * @return name and version of the plugin
+ * @return array and version of the plugin
  */
 function plugin_version_ticketcleaner() {
    //global $LANG;
@@ -108,8 +89,8 @@ function plugin_version_ticketcleaner() {
                'homepage'       => 'https://github.com/tomolimo/ticketcleaner',
                'requirements'   => [
                   'glpi'   => [
-                     'min' => '9.5',
-                     'max' => '9.6'
+                  'min' => PLUGIN_TICKETCLEANER_VERSION_MIN,
+                  'max' => PLUGIN_TICKETCLEANER_VERSION_MAX
                   ],
                ]
             ];
@@ -121,8 +102,8 @@ function plugin_version_ticketcleaner() {
  * @return false when GLPI version is not ok!
  */
 function plugin_ticketcleaner_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.5', 'lt') || version_compare(GLPI_VERSION, '9.6', 'ge')) {
-      echo "This plugin requires GLPI >= 9.5 and < 9.6";
+   if (version_compare(GLPI_VERSION, PLUGIN_TICKETCLEANER_VERSION_MIN, 'lt') || version_compare(GLPI_VERSION, PLUGIN_TICKETCLEANER_VERSION_MAX, 'ge')) {
+      echo "This plugin requires GLPI >= ". PLUGIN_TICKETCLEANER_VERSION_MIN ." and < " . PLUGIN_TICKETCLEANER_VERSION_MAX;
       return false;
    }
    return true;

@@ -35,6 +35,7 @@ along with this plugin. If not, see <http://www.gnu.org/licenses/>.
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
 
+use Glpi\Toolbox\Sanitizer;
 
 /**
  * Summary of loadSha1IntoDB
@@ -110,7 +111,7 @@ function plugin_ticketcleaner_install() {
 
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes_lastupdate")) {
       $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes_lastupdate` (
-				`id` INT(10) NOT NULL AUTO_INCREMENT,
+				`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				`lastupdate` VARCHAR(50) NULL,
 				PRIMARY KEY (`id`)
 			)
@@ -123,7 +124,7 @@ function plugin_ticketcleaner_install() {
 
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_picturehashes")) {
       $query = "CREATE TABLE `glpi_plugin_ticketcleaner_picturehashes` (
-				`id` INT(10) NOT NULL AUTO_INCREMENT,
+				`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				`hash` CHAR(40) NOT NULL,
 				`filename` VARCHAR(255) NOT NULL,
 				PRIMARY KEY (`id`),
@@ -152,10 +153,10 @@ function plugin_ticketcleaner_install() {
    if (!$DB->tableExists("glpi_plugin_ticketcleaner_filters")) {
       $query = "
             CREATE TABLE `glpi_plugin_ticketcleaner_filters` (
-	                  `id` INT(11) NOT NULL AUTO_INCREMENT,
+	                  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	                  `name` VARCHAR(255) NOT NULL,
 	                  `type` INT(1) NOT NULL DEFAULT '1',
-	                  `order` INT(11) NULL,
+	                  `order` INT UNSIGNED NULL,
 	                  `regex` TEXT NOT NULL,
 	                  `replacement` TEXT NOT NULL,
 	                  `is_active` INT(1) NOT NULL DEFAULT '0',
@@ -272,8 +273,8 @@ class PluginTicketCleaner {
             }
 
             // unsanitize doesn't exist, so reverse one by one the sanitize
-            $temp_content = Toolbox::unclean_cross_side_scripting_deep($temp_content);
-            $temp_content = Toolbox::stripslashes_deep($temp_content);
+            $temp_content = Sanitizer::decodeHtmlSpecialCharsRecursive([$temp_content]);
+            $temp_content = Toolbox::stripslashes_deep($temp_content[0]);
             if ($is_debug) {
                 Toolbox::logInFile('TicketCleaner', "\tText content after un-sanitize: " . $temp_content . "\n" );
             }
@@ -289,8 +290,7 @@ class PluginTicketCleaner {
                }
             }
             if ($did_something) {
-               $temp_content = Toolbox::sanitize([$temp_content]); // sanitize only accepts an array
-               $parm->input['content'] = $temp_content[0];
+               $parm->input['content'] = Sanitizer::sanitize($temp_content);
             }
          }
 
