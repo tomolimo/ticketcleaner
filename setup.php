@@ -35,7 +35,7 @@ along with this plugin. If not, see <http://www.gnu.org/licenses/>.
 //                  and it cleans attached pictures to emails
 //                  It has been succesfully tested with plain TEXT and HTML emails
 // ----------------------------------------------------------------------
-define ("PLUGIN_TICKETCLEANER_VERSION", "4.0.2");
+define ("PLUGIN_TICKETCLEANER_VERSION", "4.0.3");
 define ("PLUGIN_TICKETCLEANER_VERSION_MIN", "10.0");
 define ("PLUGIN_TICKETCLEANER_VERSION_MAX", "11.0");
 
