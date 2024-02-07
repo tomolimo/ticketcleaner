@@ -59,7 +59,7 @@ function loadSha1IntoDB() {
    $res = $DB->request('glpi_plugin_ticketcleaner_picturehashes_lastupdate');
    if ($res->numrows() > 0) {
       //$row = $DB->fetch_array($res);
-      $row = $res->next();
+      $row = $res->current();
       $lastupdate = $row['lastupdate'];
    }
 
